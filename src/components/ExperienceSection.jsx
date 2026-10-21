@@ -167,7 +167,7 @@ function ExperienceSection({ items, activeExperience, onSelectExperience }) {
               <section className="experience-modal-section">
                 <h4 className="experience-modal-section-title">Stack</h4>
                 <div className="experience-stack-row">
-                  {activeExperience.tools.map((tool) => (
+                  {(stackTools.length > 0 ? stackTools : ["Portfolio", "Engineering", "Product"]).map((tool) => (
                     <span key={tool} className="tool-pill">
                       {tool}
                     </span>
