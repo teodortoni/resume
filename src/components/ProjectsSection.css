@@ -1,0 +1,28 @@
+.projects-grid {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.project-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.85rem;
+  padding: 1rem;
+}
+
+.project-links {
+  display: flex;
+  gap: 0.8rem;
+  margin: 0.7rem 0;
+}
+
+.project-links a[aria-disabled="true"] {
+  color: var(--muted);
+  text-decoration-style: dashed;
+}
+
+@media (min-width: 800px) {
+  .projects-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

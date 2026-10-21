@@ -1,0 +1,16 @@
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 1.1rem 0 1.6rem;
+}
+
+.footer-shell {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.7rem;
+}
+
+.footer-shell div {
+  display: flex;
+  gap: 0.85rem;
+}

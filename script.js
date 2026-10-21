@@ -113,9 +113,45 @@ function setupCopyEmail() {
   });
 }
 
+function setupExperienceTimeline() {
+  const timelineItems = document.querySelectorAll('.timeline-item[data-experience-id]');
+  const detailPanels = document.querySelectorAll('.experience-detail[data-experience-panel]');
+
+  if (!timelineItems.length || !detailPanels.length) return;
+
+  function setActiveExperience(experienceId) {
+    timelineItems.forEach((item) => {
+      const isActive = item.dataset.experienceId === experienceId;
+      item.classList.toggle('is-active', isActive);
+      item.setAttribute('aria-pressed', String(isActive));
+      item.closest('.timeline-entry')?.classList.toggle('is-active', isActive);
+    });
+
+    detailPanels.forEach((panel) => {
+      const isActive = panel.dataset.experiencePanel === experienceId;
+      panel.classList.toggle('is-active', isActive);
+      panel.hidden = !isActive;
+    });
+  }
+
+  timelineItems.forEach((item) => {
+    item.addEventListener('click', () => {
+      const experienceId = item.dataset.experienceId;
+      if (!experienceId) return;
+      setActiveExperience(experienceId);
+    });
+  });
+
+  const initiallyActive = document.querySelector('.timeline-item.is-active')?.dataset.experienceId ?? timelineItems[0].dataset.experienceId;
+  if (initiallyActive) {
+    setActiveExperience(initiallyActive);
+  }
+}
+
 applyConfig();
 setupNavigation();
 setupTheme();
 setupActiveSection();
 setupReveal();
 setupCopyEmail();
+setupExperienceTimeline();
