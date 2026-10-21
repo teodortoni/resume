@@ -1,0 +1,15 @@
+.section-alt {
+  background: var(--surface-alt);
+  border-block: 1px solid var(--border);
+}
+
+.build-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.85rem;
+  padding: 1rem;
+}
+
+.build-card h4 {
+  margin: 1rem 0 0.5rem;
+}

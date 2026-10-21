@@ -1,0 +1,10 @@
+.contact-email {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.copy-status {
+  min-height: 1.1rem;
+  color: var(--muted);
+  margin: 0.4rem 0 0;
+}
