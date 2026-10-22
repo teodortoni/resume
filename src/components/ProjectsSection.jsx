@@ -1,17 +1,85 @@
-import { useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import "./ProjectsSection.css";
 
 function ProjectsSection({ items = [] }) {
   const trackRef = useRef(null);
+  const hasInfiniteLoop = items.length > 1;
+  const renderedItems = useMemo(
+    () => (hasInfiniteLoop ? [...items, ...items, ...items] : items),
+    [hasInfiniteLoop, items]
+  );
+
+  const getCardSpan = (track) => {
+    const firstCard = track.querySelector(".project-card");
+    if (!firstCard) return 0;
+
+    const computedTrackStyle = window.getComputedStyle(track);
+    const gap = Number.parseFloat(computedTrackStyle.columnGap || computedTrackStyle.gap || "0") || 0;
+    return firstCard.getBoundingClientRect().width + gap;
+  };
+
+  const normalizeTrackPosition = () => {
+    const track = trackRef.current;
+    if (!track || !hasInfiniteLoop) return;
+
+    const cardSpan = getCardSpan(track);
+    if (!cardSpan) return;
+
+    const segmentWidth = cardSpan * items.length;
+    const currentScrollLeft = track.scrollLeft;
+    const offsetInSegment = ((currentScrollLeft - segmentWidth) % segmentWidth + segmentWidth) % segmentWidth;
+    const centeredPosition = segmentWidth + offsetInSegment;
+
+    if (Math.abs(centeredPosition - currentScrollLeft) > 1) {
+      track.scrollTo({ left: centeredPosition, behavior: "auto" });
+    }
+  };
+
+  const setCenterSegmentPosition = () => {
+    const track = trackRef.current;
+    if (!track || !hasInfiniteLoop) return;
+
+    const cardSpan = getCardSpan(track);
+    if (!cardSpan) return;
+
+    track.scrollTo({
+      left: cardSpan * items.length,
+      behavior: "auto"
+    });
+  };
+
+  useEffect(() => {
+    if (!hasInfiniteLoop) return undefined;
+
+    const syncPosition = () => setCenterSegmentPosition();
+    const mountFrame = window.requestAnimationFrame(syncPosition);
+    window.addEventListener("resize", syncPosition);
+
+    return () => {
+      window.cancelAnimationFrame(mountFrame);
+      window.removeEventListener("resize", syncPosition);
+    };
+  }, [hasInfiniteLoop, items.length]);
 
   const scrollProjects = (direction) => {
     const track = trackRef.current;
     if (!track) return;
 
-    const firstCard = track.querySelector(".project-card");
-    const cardWidth = firstCard ? firstCard.getBoundingClientRect().width + 16 : 360;
+    const cardSpan = getCardSpan(track);
+    if (!cardSpan) return;
+
+    if (!hasInfiniteLoop) {
+      track.scrollBy({
+        left: direction === "next" ? cardSpan : -cardSpan,
+        behavior: "smooth"
+      });
+      return;
+    }
+
+    normalizeTrackPosition();
+
     track.scrollBy({
-      left: direction === "next" ? cardWidth : -cardWidth,
+      left: direction === "next" ? cardSpan : -cardSpan,
       behavior: "smooth"
     });
   };
@@ -22,7 +90,7 @@ function ProjectsSection({ items = [] }) {
         <div className="projects-header-row">
           <h2 id="projects-heading" className="section-heading">Personal Projects</h2>
 
-          {items.length > 1 && (
+          {hasInfiniteLoop && (
             <div className="projects-controls" aria-label="Project carousel controls">
               <button type="button" className="project-arrow" aria-label="Previous project" onClick={() => scrollProjects("prev")}>
                 ←
@@ -36,8 +104,8 @@ function ProjectsSection({ items = [] }) {
 
         <div className="projects-carousel">
           <div className="project-track" ref={trackRef}>
-            {items.map((project) => (
-              <article key={project.id} className="project-card experience-card">
+            {renderedItems.map((project, index) => (
+              <article key={`${project.id}-${index}`} className="project-card experience-card">
                 <header className="experience-card-header">
                   <span className="experience-card-date">{project.date}</span>
                   <span className="experience-card-role-badge">{project.badge}</span>
