@@ -1,0 +1,80 @@
+export type SocialLinks = {
+  github?: string;
+  linkedin?: string;
+  website?: string;
+  email?: string;
+};
+
+export type Profile = {
+  name: string;
+  title: string;
+  location?: string;
+  authorization?: string;
+  jobPreferences?: string;
+  summary: string;
+  yearsOfExperience: number;
+  education?: EducationItem;
+  email?: string;
+  socialLinks?: SocialLinks;
+};
+
+export type Project = {
+  id: string;
+  title: string;
+  date: string;
+  badge: string;
+  summary: string;
+  tools: string[];
+  githubUrl?: string;
+  liveUrl?: string;
+};
+
+export type ExperienceItem = {
+  id: string;
+  company: string;
+  division: string;
+  title: string;
+  dates: string;
+  projects: Array<{
+    projectName: string;
+    projectDescription: string;
+    highlights: string[];
+    metrics?: Array<{ value: string; label: string }>;
+    problem: string;
+    approach: string[];
+    outcome: string[];
+    stack: string[];
+  }>;
+};
+
+export type EducationItem = {
+  degree: string;
+  school: string;
+  location?: string;
+};
+
+export type SkillGroup = {
+  title: string;
+  items: string[];
+};
+
+export type Certification = {
+  name: string;
+  issuer?: string;
+  year?: string;
+};
+
+export type Language = {
+  name: string;
+  proficiency?: string;
+};
+
+export type Resume = {
+  profile: Profile;
+  experience: ExperienceItem[];
+  projects: Project[];
+  skills: SkillGroup[];
+  certifications?: Certification[];
+  languages?: Language[];
+  socialLinks: SocialLinks;
+};

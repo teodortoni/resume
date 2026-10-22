@@ -1,0 +1,208 @@
+{
+  "profile": {
+    "name": "Teodor Toni",
+    "title": "Senior Full-Stack Software Engineer",
+    "location": "Venice, FL",
+    "authorization": "Authorized to work in the US · No sponsorship required",
+    "jobPreference": "Remote US",
+    "summary": "Building reliable backend systems, APIs, and production web applications.",
+    "yearsOfExperience": 15,
+    "education": {
+      "major": "Computer Information Systems",
+      "degree": "BBA",
+      "school": "The American College of Greece"
+    },
+    "email": "teodortoni@yahoo.com",
+    "socialLinks": {
+      "github": "https://github.com/teodortoni",
+      "linkedin": "https://linkedin.com/in/teodor-t-89a4191a/"
+    }
+  },
+  "experience": [
+    {
+      "id": "soft-consultant",
+      "company": "Independent Consultant",
+      "division": "Real Estate",
+      "title": "Senior Software Engineer",
+      "dates": "January 2025 - Present",
+      "projects": [
+        {
+          "projectName": "Tax Preparation Platform",
+          "projectDescription": "A tenant-aware tax workflow for small landlords with AI-assisted expense classification and PDF generation.",
+          "highlights": [
+            "Built a multi-tenant tax-preparation application for small landlords using React/TypeScript, Node.js/NestJS, and PostgreSQL to streamline rental income and expense reporting",
+            "Implemented token-based authentication, tenant-aware data architecture, validation workflows, and PDF tax-form generation",
+            "Developing agentic AI features for receipt extraction, expense classification, data validation, and guided tax-preparation workflows"
+          ],
+          "metrics": [
+            { "value": "3X", "label": "Faster prep" },
+            { "value": "99%", "label": "Validation coverage" },
+            { "value": "AI", "label": "Receipt parsing" },
+            { "value": "1x", "label": "Single workflow" }
+          ],
+          "problem": "Landlords and tax preparers needed a faster, more reliable way to manage rental income, expenses, and tax documentation without relying on fragmented spreadsheets or manual workflows.",
+          "approach": [
+            "Designed a multi-tenant SaaS architecture with secure authentication and tenant-aware data boundaries.",
+            "Built validation checkpoints and PDF generation workflows to reduce ambiguity in tax preparation.",
+            "Added AI-assisted receipt extraction and expense categorization to decrease manual review effort."
+          ],
+          "outcome": [
+            "Streamlined the end-to-end tax preparation experience for small landlords.",
+            "Reduced manual administrative overhead while improving data reliability.",
+            "Created a scalable foundation for more intelligent, guided preparation workflows."
+          ],
+          "stack": ["TypeScript", "NestJS", "AWS", "Docker", "CI/CD", "PostgreSQL"]
+        }
+      ]
+    },
+    {
+      "id": "wwe-senior",
+      "company": "WWE",
+      "division": "Media Technology",
+      "title": "Senior Software Engineer",
+      "dates": "September 2020 – January 2025",
+      "projects": [
+        {
+          "projectName": "Video Management System",
+          "projectDescription": "A high-throughput API ecosystem for media operations, partner integrations, and internal tooling at scale.",
+          "highlights": [
+            "35%+ lower API response times across three services using Node.js, NestJS, caching, and DB optimization.",
+            "Maintained 99% uptime for systems handling 1M+ requests with AWS, Docker, and Datadog.",
+            "Led 4 API applications from concept through production for WWE’s Video Management System.",
+            "Built internal APIs and web tools that supported partner onboarding.",
+            "Built secure partner integrations with AWS API Gateway and token-based authentication.",
+            "Reduced release time from ~1 hour to 5 minutes via CI/CD automation and automated testing.",
+            "Reduced DB query time by 15% through schema, indexing, and query optimization.",
+            "Mentored 4 engineers and 1 QA while leading code reviews and technical documentation."
+          ],
+          "metrics": [
+            { "value": "35%+", "label": "API response" },
+            { "value": "99%", "label": "Uptime" },
+            { "value": "4", "label": "API apps" },
+            { "value": "60x", "label": "Release speed" }
+          ],
+          "problem": "The Video Management System needed to support partner onboarding, internal tooling, and high-throughput API workloads without compromising reliability, release velocity, or operational stability.",
+          "approach": [
+            "Led backend architecture and performance tuning across multiple services.",
+            "Improved deployment pipelines, observability, and cloud resilience with AWS and Datadog.",
+            "Worked cross-functionally to deliver partner integrations and internal tooling without slowing release velocity."
+          ],
+          "outcome": [
+            "Improved service latency and operational stability across the platform.",
+            "Reduced release time dramatically while supporting higher-volume and more complex integrations.",
+            "Strengthened the engineering organization through mentorship and technical leadership."
+          ],
+          "stack": ["Node.js", "NestJS", "AWS", "Docker", "Datadog", "CI/CD", "PostgreSQL", "TypeScript"]
+        }
+      ]
+    },
+    {
+      "id": "wwe-fullstack",
+      "company": "WWE",
+      "division": "Media Technology",
+      "title": "Software Engineer (Full Stack)",
+      "dates": "December 2018 – September 2020",
+      "projects": [
+        {
+          "projectName": "Reusable Product UI Platform",
+          "projectDescription": "A shared component system for digital products spanning internal tools and customer-facing experiences.",
+          "highlights": [
+            "Built and shipped product features across React, Node.js, and AWS services.",
+            "Created a reusable React component library adopted across 4+ products.",
+            "Improved product usability by 50% through UX and component architecture improvements.",
+            "Reduced integration errors by 50% across internal system integrations."
+          ],
+          "metrics": [
+            { "value": "50%", "label": "UX uplift" },
+            { "value": "4+", "label": "Product adoption" },
+            { "value": "50%", "label": "Fewer errors" },
+            { "value": "3X", "label": "Delivery speed" }
+          ],
+          "problem": "Multiple internal product teams were duplicating frontend patterns and dealing with inconsistent UX and integration complexity across shared digital experiences.",
+          "approach": [
+            "Built a reusable UI foundation and aligned teams on shared patterns and design conventions.",
+            "Improved product flows and reduced friction in integration-heavy frontend work.",
+            "Worked across product squads to create stronger consistency without slowing delivery."
+          ],
+          "outcome": [
+            "Accelerated delivery across multiple products.",
+            "Improved usability and consistency across shared digital touchpoints.",
+            "Reduced recurring defect and integration overhead across teams."
+          ],
+          "stack": ["React", "Node.js", "AWS", "TypeScript", "Design Systems"]
+        }
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "id": "resume-platform",
+      "title": "Open Source Resume Platform",
+      "date": "Current",
+      "badge": "Open Source",
+      "summary": "A configuration-driven developer resume website built for local customization, theme switching, and GitHub Pages deployment.",
+      "tools": ["React", "Vite", "GitHub Pages", "CSS"],
+      "githubUrl": "https://github.com/teodortoni/resume",
+      "liveUrl": "https://teodortoni.github.io/resume/"
+    },
+    {
+      "id": "future-projects",
+      "title": "Upcoming Personal Projects",
+      "date": "Planned",
+      "badge": "GitHub",
+      "summary": "A placeholder project slot for future tools, experiments, or GitHub repositories I plan to publish as I continue building.",
+      "tools": ["React", "Node.js", "TypeScript", "AI"],
+      "githubUrl": "https://github.com/teodortoni",
+      "liveUrl": ""
+    },
+    {
+      "id": "placeholder-project-1",
+      "title": "Project Placeholder 1",
+      "date": "Planned",
+      "badge": "Coming Soon",
+      "summary": "A future GitHub project placeholder for a new app, internal tool, or prototype I plan to build and publish later.",
+      "tools": ["React", "TypeScript", "Node.js", "API"],
+      "githubUrl": "https://github.com/teodortoni",
+      "liveUrl": ""
+    }
+  ],
+  "skills": [
+    {
+      "title": "Backend & APIs",
+      "items": ["Node.js", "NestJS", "TypeScript", "REST", "GraphQL", "API design", "Token-based authentication", "Microservices"]
+    },
+    {
+      "title": "Cloud & Distributed Systems",
+      "items": ["AWS", "EC2", "RDS", "SQS", "S3", "Lambda", "API Gateway", "ElastiCache", "Docker", "Datadog"]
+    },
+    {
+      "title": "Data",
+      "items": ["PostgreSQL", "MySQL", "NoSQL", "JSON Schema", "Query optimization", "Indexing"]
+    },
+    {
+      "title": "Frontend",
+      "items": ["React", "TypeScript", "Component architecture"]
+    },
+    {
+      "title": "Engineering",
+      "items": ["CI/CD", "Automated testing", "Code review", "System design", "Technical documentation", "Mentoring"]
+    },
+    {
+      "title": "AI Development",
+      "items": ["GitHub Copilot", "Agentic AI", "AI-assisted workflows", "AI application development"]
+    }
+  ],
+  "certifications": [
+    { "name": "AWS Cloud Practitioner", "issuer": "Amazon Web Services", "year": "2024" }
+  ],
+  "languages": [
+    { "name": "English", "proficiency": "Fluent" },
+    { "name": "Albanian", "proficiency": "Native" },
+    { "name": "Greek", "proficiency": "Fluent" }
+  ],
+  "socialLinks": {
+    "github": "https://github.com/teodortoni",
+    "linkedin": "https://linkedin.com/in/teodor-t-89a4191a/",
+    "email": "teodortoni@yahoo.com"
+  }
+}

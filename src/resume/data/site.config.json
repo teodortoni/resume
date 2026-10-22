@@ -1,0 +1,15 @@
+{
+  "siteTitle": "Teodor Toni",
+  "description": "Senior Full-Stack Engineer specializing in TypeScript, React, Node.js and AWS.",
+  "theme": "default",
+  "showExperience": true,
+  "showProjects": true,
+  "showSkills": true,
+  "showCertifications": true,
+  "name": "Teodor Toni",
+  "email": "teodortoni@yahoo.com",
+  "github": "https://github.com/teodortoni",
+  "linkedin": "https://linkedin.com/in/teodor-t-89a4191a/",
+  "resumePath": "/resume/assets/resume.pdf",
+  "yearsOfExperience": 15
+}
