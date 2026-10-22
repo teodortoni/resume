@@ -22,6 +22,7 @@ async function loadConfig() {
 function App() {
   const [siteConfig, setSiteConfig] = useState(siteConfigSeed);
   const [activeExperienceId, setActiveExperienceId] = useState(resumeData.experience[0]?.id ?? "");
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -36,6 +37,10 @@ function App() {
       active = false;
     };
   }, []);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = isDarkMode ? "dark" : "light";
+  }, [isDarkMode]);
 
   const activeExperience = useMemo(
     () => resumeData.experience.find((item) => item.id === activeExperienceId) ?? resumeData.experience[0],
@@ -58,6 +63,8 @@ function App() {
       config={siteConfig}
       activeExperienceId={activeExperience?.id ?? activeExperienceId}
       onSelectExperience={setActiveExperienceId}
+      isDarkMode={isDarkMode}
+      onToggleTheme={() => setIsDarkMode((value) => !value)}
     />
   );
 }

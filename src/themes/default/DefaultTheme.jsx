@@ -6,13 +6,13 @@ import ProjectsSection from "../../components/ProjectsSection";
 import ContactSection from "../../components/ContactSection";
 import "./theme.css";
 
-function DefaultTheme({ resume, config, activeExperienceId, onSelectExperience }) {
+function DefaultTheme({ resume, config, activeExperienceId, onSelectExperience, isDarkMode, onToggleTheme }) {
   const activeExperience =
     resume.experience.find((item) => item.id === activeExperienceId) ?? resume.experience[0];
 
   return (
-    <div className="app-shell theme-default">
-      <Header config={config} />
+    <div className="app-shell theme-default" data-variant={isDarkMode ? "dark" : "light"}>
+      <Header config={config} isDarkMode={isDarkMode} onToggleTheme={onToggleTheme} />
       <main id="main-content">
         <HeroSection config={config} profile={resume.profile} />
         {config.showExperience && (

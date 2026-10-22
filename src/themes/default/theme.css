@@ -3,11 +3,21 @@
   --theme-surface-alt: #ffffff;
   --theme-card: rgba(255, 255, 255, 0.82);
   --theme-text: #0b4363;
+  --theme-text-bright: #1f5d8a;
   --theme-muted: #4a6885;
   --theme-accent: #21a6f2;
   --theme-accent-strong: #0d6fb8;
   --theme-accent-soft: rgba(33, 166, 242, 0.09);
   --theme-border: rgba(11, 67, 99, 0.12);
+}
+
+.theme-default[data-variant="dark"] {
+  --theme-text: #ebf5ff;
+  --theme-text-bright: #f5fbff;
+  --theme-muted: #c7dcec;
+  --theme-accent: #7ad8ff;
+  --theme-accent-strong: #a7e0ff;
+  --theme-border: rgba(155, 197, 225, 0.18);
 }
 
 .theme-default {
@@ -16,6 +26,71 @@
     radial-gradient(circle at top left, rgba(33, 166, 242, 0.07), transparent 30%),
     linear-gradient(180deg, #f8fbfd 0%, #ffffff 100%);
   color: var(--theme-text);
+}
+
+.theme-default[data-variant="dark"] {
+  background:
+    radial-gradient(circle at top left, rgba(79, 195, 255, 0.12), transparent 28%),
+    linear-gradient(180deg, #071621 0%, #0b1a2a 100%);
+  color: var(--theme-text-bright);
+}
+
+.theme-default[data-variant="dark"] .site-header {
+  background: rgba(9, 18, 27, 0.82);
+  border-bottom-color: rgba(155, 197, 225, 0.18);
+}
+
+.theme-default[data-variant="dark"] .menu-toggle,
+.theme-default[data-variant="dark"] .theme-toggle,
+.theme-default[data-variant="dark"] .project-arrow,
+.theme-default[data-variant="dark"] .meta-badge,
+.theme-default[data-variant="dark"] .light-action,
+.theme-default[data-variant="dark"] .experience-modal-close {
+  background: rgba(16, 40, 59, 0.9);
+  border-color: rgba(155, 197, 225, 0.2);
+  color: var(--theme-text);
+}
+
+.theme-default[data-variant="dark"] .hero {
+  background:
+    radial-gradient(circle at top left, rgba(79, 195, 255, 0.12), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(79, 195, 255, 0.08), transparent 24%),
+    linear-gradient(180deg, rgba(8, 22, 33, 0.96), rgba(11, 28, 41, 0.95));
+}
+
+.theme-default[data-variant="dark"] .hero::before {
+  background-image:
+    linear-gradient(rgba(142, 197, 235, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(142, 197, 235, 0.04) 1px, transparent 1px);
+}
+
+.theme-default[data-variant="dark"] .experience-card,
+.theme-default[data-variant="dark"] .portrait-card,
+.theme-default[data-variant="dark"] .projects-carousel,
+.theme-default[data-variant="dark"] .experience-modal-dialog {
+  background: rgba(11, 28, 41, 0.92);
+  border-color: rgba(155, 197, 225, 0.16);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+}
+
+.theme-default[data-variant="dark"] .timeline-item.is-active {
+  color: #0b1a2a;
+}
+
+.theme-default[data-variant="dark"] .experience-card-role-badge,
+.theme-default[data-variant="dark"] .tool-pill,
+.theme-default[data-variant="dark"] .skill-bubble {
+  background: rgba(79, 195, 255, 0.12);
+  border-color: rgba(155, 197, 225, 0.18);
+}
+
+.theme-default[data-variant="dark"] .skills-list {
+  background: transparent;
+}
+
+.theme-default[data-variant="dark"] .contact-section {
+  background: transparent;
+  border-top-color: rgba(155, 197, 225, 0.12);
 }
 
 .theme-default .site-header {
@@ -75,6 +150,55 @@
 
 .theme-default .site-nav .resume-link {
   font-weight: 600;
+}
+
+.theme-default .theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid var(--theme-border);
+  border-radius: 999px;
+  padding: 0;
+  cursor: pointer;
+  transition: background-color 180ms ease, border-color 180ms ease, transform 180ms ease;
+}
+
+.theme-default .theme-toggle.is-dark {
+  background: rgba(11, 20, 31, 0.88);
+  border-color: rgba(155, 197, 225, 0.2);
+  color: var(--theme-accent-strong);
+}
+
+.theme-default .theme-toggle.is-light {
+  background: rgba(33, 166, 242, 0.12);
+  border-color: rgba(33, 166, 242, 0.28);
+  color: var(--theme-accent-strong);
+}
+
+.theme-default .theme-toggle:hover,
+.theme-default .theme-toggle:focus-visible {
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.theme-default .theme-toggle.is-dark:hover,
+.theme-default .theme-toggle.is-dark:focus-visible {
+  background: rgba(9, 17, 28, 0.96);
+  border-color: rgba(155, 197, 225, 0.26);
+}
+
+.theme-default .theme-toggle.is-light:hover,
+.theme-default .theme-toggle.is-light:focus-visible {
+  background: rgba(33, 166, 242, 0.14);
+  border-color: rgba(33, 166, 242, 0.32);
+}
+
+.theme-default .theme-toggle-icon {
+  width: 0.9rem;
+  height: 0.9rem;
+  display: block;
 }
 
 @media (min-width: 800px) {
@@ -230,6 +354,13 @@
   box-shadow: 0 10px 22px rgba(11, 67, 99, 0.08);
   transform: translateY(-1px);
   outline: none;
+}
+
+.theme-default[data-variant="dark"] .light-action:hover,
+.theme-default[data-variant="dark"] .light-action:focus-visible {
+  background: rgba(24, 58, 82, 0.98);
+  border-color: rgba(122, 216, 255, 0.42);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.22);
 }
 
 .theme-default .hero-art {
