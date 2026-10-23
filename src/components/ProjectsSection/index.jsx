@@ -87,7 +87,10 @@ function ProjectsSection({ items = [] }) {
     <section id="projects" className="section" aria-labelledby="projects-heading">
       <div className="container">
         <div className="projects-header-row">
-          <h2 id="projects-heading" className="section-heading">Personal Projects</h2>
+          <div className="section-heading-block">
+            <span className="section-heading-label">Built for curiosity</span>
+            <h2 id="projects-heading" className="section-heading">Personal Projects</h2>
+          </div>
 
           {hasInfiniteLoop && (
             <div className="projects-controls" aria-label="Project carousel controls">

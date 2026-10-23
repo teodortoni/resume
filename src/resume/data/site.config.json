@@ -1,7 +1,7 @@
 {
   "siteTitle": "Teodor Toni",
   "description": "Senior Full-Stack Engineer specializing in TypeScript, React, Node.js and AWS.",
-  "theme": "default",
+  "theme": "modern",
   "showExperience": true,
   "showProjects": true,
   "showSkills": true,

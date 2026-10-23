@@ -32,7 +32,10 @@ function SkillsSection({ skills = DEFAULT_SKILLS }) {
   return (
     <section id="skills" className="section" aria-labelledby="skills-heading">
       <div className="container">
-        <h2 id="skills-heading" className="section-heading">Skills</h2>
+        <div className="section-heading-block">
+          <span className="section-heading-label">Core capability</span>
+          <h2 id="skills-heading" className="section-heading">Skills</h2>
+        </div>
         <div className="skills-list">
           {skillGroups.map((group) => (
             <article key={group.title} className="skills-row">

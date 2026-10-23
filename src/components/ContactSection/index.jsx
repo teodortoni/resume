@@ -47,8 +47,10 @@ function ContactSection({ config }) {
   return (
     <section id="contact" className="contact-section" aria-labelledby="contact-heading">
       <div className="container contact-shell">
-        <p className="contact-kicker">Let&apos;s build something useful.</p>
-        <h2 id="contact-heading" className="section-heading contact-heading">Let&apos;s talk about software.</h2>
+        <div className="section-heading-block section-heading-block--compact">
+          <span className="section-heading-label">Start a conversation</span>
+          <h2 id="contact-heading" className="section-heading contact-heading">Let&apos;s talk about software.</h2>
+        </div>
         <p className="contact-intro">
           I’m always interested in good engineering problems, thoughtful teams, and opportunities to build systems that
           matter.
