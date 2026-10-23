@@ -19,9 +19,9 @@ function ModernTheme({ resume, config, activeExperienceId, onSelectExperience, i
 
   return (
     <div className="app-shell theme-modern" data-variant={isDarkMode ? "dark" : "light"}>
-      <Header config={config} isDarkMode={isDarkMode} onToggleTheme={onToggleTheme} />
+      <Header config={config} profile={resume.profile} isDarkMode={isDarkMode} onToggleTheme={onToggleTheme} />
       <main id="main-content" className="modern-main">
-        <HeroSection config={config} profile={resume.profile} />
+        {config.showProfile !== false && <HeroSection config={config} profile={resume.profile} />}
 
         <section className="modern-proof-strip section" aria-label="Profile highlights">
           <div className="container">
@@ -56,8 +56,28 @@ function ModernTheme({ resume, config, activeExperienceId, onSelectExperience, i
           </div>
         )}
 
+        {config.showCertifications && resume.certifications?.length > 0 && (
+          <section className="section" aria-labelledby="modern-certifications-heading">
+            <div className="container">
+              <div className="section-heading-block section-heading-block--compact">
+                <span className="section-heading-label">Credentials</span>
+                <h2 id="modern-certifications-heading" className="section-heading">Certifications</h2>
+              </div>
+              <div className="skills-grid">
+                {resume.certifications.map((certification) => (
+                  <div key={`${certification.name}-${certification.issuer}`} className="skill-group-card">
+                    <h3>{certification.name}</h3>
+                    <p>{certification.issuer}</p>
+                    <span>{certification.year}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
         <div className="modern-contact-panel">
-          <ContactSection config={config} />
+          <ContactSection config={config} profile={resume.profile} />
         </div>
       </main>
     </div>

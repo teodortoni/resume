@@ -2,7 +2,6 @@ export type SocialLinks = {
   github?: string;
   linkedin?: string;
   website?: string;
-  email?: string;
 };
 
 export type Profile = {
@@ -10,12 +9,13 @@ export type Profile = {
   title: string;
   location?: string;
   authorization?: string;
-  jobPreferences?: string;
+  jobPreference?: string;
   summary: string;
   yearsOfExperience: number;
   education?: EducationItem;
   email?: string;
   socialLinks?: SocialLinks;
+  languages?: Language[];
 };
 
 export type Project = {
@@ -65,7 +65,10 @@ export type Certification = {
 };
 
 export type Language = {
+  code?: string;
   name: string;
+  nativeName?: string;
+  direction?: "ltr" | "rtl";
   proficiency?: string;
 };
 
@@ -75,6 +78,4 @@ export type Resume = {
   projects: Project[];
   skills: SkillGroup[];
   certifications?: Certification[];
-  languages?: Language[];
-  socialLinks: SocialLinks;
 };
