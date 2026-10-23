@@ -3,7 +3,6 @@ import themeRegistry from "./themes/registry";
 import Dashboard from "./dashboard/Dashboard";
 import resumeData from "./resume/data/resume.json";
 import siteConfigSeed from "./resume/data/site.config.json";
-import "./App.css";
 import "./styles/print.css";
 
 async function loadConfig() {
