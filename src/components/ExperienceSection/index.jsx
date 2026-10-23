@@ -42,7 +42,10 @@ function ExperienceSection({ items, activeExperience, onSelectExperience }) {
   return (
     <section id="experience" className="section" aria-labelledby="experience-heading">
       <div className="container">
-        <h2 id="experience-heading" className="section-heading">Experience</h2>
+        <div className="section-heading-block">
+          <span className="section-heading-label">Selected work</span>
+          <h2 id="experience-heading" className="section-heading">Experience</h2>
+        </div>
 
         <div className="experience-layout">
           <ol className="timeline">

@@ -90,6 +90,7 @@ function Dashboard({ initialConfig, onSave, resume }) {
             Theme
             <select name="theme" value={draft.theme || "default"} onChange={handleFieldChange}>
               <option value="default">Default</option>
+              <option value="modern">Modern</option>
             </select>
           </label>
 
