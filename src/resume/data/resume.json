@@ -16,7 +16,30 @@
     "socialLinks": {
       "github": "https://github.com/teodortoni",
       "linkedin": "https://linkedin.com/in/teodor-t-89a4191a/"
-    }
+    },
+    "languages": [
+      {
+        "code": "en",
+        "name": "English",
+        "nativeName": "English",
+        "direction": "ltr",
+        "proficiency": "Fluent"
+      },
+      {
+        "code": "sq",
+        "name": "Albanian",
+        "nativeName": "Shqip",
+        "direction": "ltr",
+        "proficiency": "Native"
+      },
+      {
+        "code": "el",
+        "name": "Greek",
+        "nativeName": "Ελληνικά",
+        "direction": "ltr",
+        "proficiency": "Fluent"
+      }
+    ]
   },
   "experience": [
     {
@@ -35,10 +58,22 @@
             "Developing agentic AI features for receipt extraction, expense classification, data validation, and guided tax-preparation workflows"
           ],
           "metrics": [
-            { "value": "3X", "label": "Faster prep" },
-            { "value": "99%", "label": "Validation coverage" },
-            { "value": "AI", "label": "Receipt parsing" },
-            { "value": "1x", "label": "Single workflow" }
+            {
+              "value": "3X",
+              "label": "Faster prep"
+            },
+            {
+              "value": "99%",
+              "label": "Validation coverage"
+            },
+            {
+              "value": "AI",
+              "label": "Receipt parsing"
+            },
+            {
+              "value": "1x",
+              "label": "Single workflow"
+            }
           ],
           "problem": "Landlords and tax preparers needed a faster, more reliable way to manage rental income, expenses, and tax documentation without relying on fragmented spreadsheets or manual workflows.",
           "approach": [
@@ -51,7 +86,14 @@
             "Reduced manual administrative overhead while improving data reliability.",
             "Created a scalable foundation for more intelligent, guided preparation workflows."
           ],
-          "stack": ["TypeScript", "NestJS", "AWS", "Docker", "CI/CD", "PostgreSQL"]
+          "stack": [
+            "TypeScript",
+            "NestJS",
+            "AWS",
+            "Docker",
+            "CI/CD",
+            "PostgreSQL"
+          ]
         }
       ]
     },
@@ -76,10 +118,22 @@
             "Mentored 4 engineers and 1 QA while leading code reviews and technical documentation."
           ],
           "metrics": [
-            { "value": "35%+", "label": "API response" },
-            { "value": "99%", "label": "Uptime" },
-            { "value": "4", "label": "API apps" },
-            { "value": "60x", "label": "Release speed" }
+            {
+              "value": "35%+",
+              "label": "API response"
+            },
+            {
+              "value": "99%",
+              "label": "Uptime"
+            },
+            {
+              "value": "4",
+              "label": "API apps"
+            },
+            {
+              "value": "60x",
+              "label": "Release speed"
+            }
           ],
           "problem": "The Video Management System needed to support partner onboarding, internal tooling, and high-throughput API workloads without compromising reliability, release velocity, or operational stability.",
           "approach": [
@@ -92,7 +146,16 @@
             "Reduced release time dramatically while supporting higher-volume and more complex integrations.",
             "Strengthened the engineering organization through mentorship and technical leadership."
           ],
-          "stack": ["Node.js", "NestJS", "AWS", "Docker", "Datadog", "CI/CD", "PostgreSQL", "TypeScript"]
+          "stack": [
+            "Node.js",
+            "NestJS",
+            "AWS",
+            "Docker",
+            "Datadog",
+            "CI/CD",
+            "PostgreSQL",
+            "TypeScript"
+          ]
         }
       ]
     },
@@ -113,10 +176,22 @@
             "Reduced integration errors by 50% across internal system integrations."
           ],
           "metrics": [
-            { "value": "50%", "label": "UX uplift" },
-            { "value": "4+", "label": "Product adoption" },
-            { "value": "50%", "label": "Fewer errors" },
-            { "value": "3X", "label": "Delivery speed" }
+            {
+              "value": "50%",
+              "label": "UX uplift"
+            },
+            {
+              "value": "4+",
+              "label": "Product adoption"
+            },
+            {
+              "value": "50%",
+              "label": "Fewer errors"
+            },
+            {
+              "value": "3X",
+              "label": "Delivery speed"
+            }
           ],
           "problem": "Multiple internal product teams were duplicating frontend patterns and dealing with inconsistent UX and integration complexity across shared digital experiences.",
           "approach": [
@@ -129,7 +204,13 @@
             "Improved usability and consistency across shared digital touchpoints.",
             "Reduced recurring defect and integration overhead across teams."
           ],
-          "stack": ["React", "Node.js", "AWS", "TypeScript", "Design Systems"]
+          "stack": [
+            "React",
+            "Node.js",
+            "AWS",
+            "TypeScript",
+            "Design Systems"
+          ]
         }
       ]
     }
@@ -141,7 +222,12 @@
       "date": "Current",
       "badge": "Open Source",
       "summary": "A configuration-driven developer resume website built for local customization, theme switching, and GitHub Pages deployment.",
-      "tools": ["React", "Vite", "GitHub Pages", "CSS"],
+      "tools": [
+        "React",
+        "Vite",
+        "GitHub Pages",
+        "CSS"
+      ],
       "githubUrl": "https://github.com/teodortoni/resume",
       "liveUrl": "https://teodortoni.github.io/resume/"
     },
@@ -151,7 +237,12 @@
       "date": "Planned",
       "badge": "GitHub",
       "summary": "A placeholder project slot for future tools, experiments, or GitHub repositories I plan to publish as I continue building.",
-      "tools": ["React", "Node.js", "TypeScript", "AI"],
+      "tools": [
+        "React",
+        "Node.js",
+        "TypeScript",
+        "AI"
+      ],
       "githubUrl": "https://github.com/teodortoni",
       "liveUrl": ""
     },
@@ -161,7 +252,12 @@
       "date": "Planned",
       "badge": "Coming Soon",
       "summary": "A future GitHub project placeholder for a new app, internal tool, or prototype I plan to build and publish later.",
-      "tools": ["React", "TypeScript", "Node.js", "API"],
+      "tools": [
+        "React",
+        "TypeScript",
+        "Node.js",
+        "API"
+      ],
       "githubUrl": "https://github.com/teodortoni",
       "liveUrl": ""
     }
@@ -169,40 +265,77 @@
   "skills": [
     {
       "title": "Backend & APIs",
-      "items": ["Node.js", "NestJS", "TypeScript", "REST", "GraphQL", "API design", "Token-based authentication", "Microservices"]
+      "items": [
+        "Node.js",
+        "NestJS",
+        "TypeScript",
+        "REST",
+        "GraphQL",
+        "API design",
+        "Token-based authentication",
+        "Microservices"
+      ]
     },
     {
       "title": "Cloud & Distributed Systems",
-      "items": ["AWS", "EC2", "RDS", "SQS", "S3", "Lambda", "API Gateway", "ElastiCache", "Docker", "Datadog"]
+      "items": [
+        "AWS",
+        "EC2",
+        "RDS",
+        "SQS",
+        "S3",
+        "Lambda",
+        "API Gateway",
+        "ElastiCache",
+        "Docker",
+        "Datadog"
+      ]
     },
     {
       "title": "Data",
-      "items": ["PostgreSQL", "MySQL", "NoSQL", "JSON Schema", "Query optimization", "Indexing"]
+      "items": [
+        "PostgreSQL",
+        "MySQL",
+        "NoSQL",
+        "JSON Schema",
+        "Query optimization",
+        "Indexing"
+      ]
     },
     {
       "title": "Frontend",
-      "items": ["React", "TypeScript", "Component architecture"]
+      "items": [
+        "React",
+        "TypeScript",
+        "Component architecture"
+      ]
     },
     {
       "title": "Engineering",
-      "items": ["CI/CD", "Automated testing", "Code review", "System design", "Technical documentation", "Mentoring"]
+      "items": [
+        "CI/CD",
+        "Automated testing",
+        "Code review",
+        "System design",
+        "Technical documentation",
+        "Mentoring"
+      ]
     },
     {
       "title": "AI Development",
-      "items": ["GitHub Copilot", "Agentic AI", "AI-assisted workflows", "AI application development"]
+      "items": [
+        "GitHub Copilot",
+        "Agentic AI",
+        "AI-assisted workflows",
+        "AI application development"
+      ]
     }
   ],
   "certifications": [
-    { "name": "AWS Cloud Practitioner", "issuer": "Amazon Web Services", "year": "2024" }
-  ],
-  "languages": [
-    { "name": "English", "proficiency": "Fluent" },
-    { "name": "Albanian", "proficiency": "Native" },
-    { "name": "Greek", "proficiency": "Fluent" }
-  ],
-  "socialLinks": {
-    "github": "https://github.com/teodortoni",
-    "linkedin": "https://linkedin.com/in/teodor-t-89a4191a/",
-    "email": "teodortoni@yahoo.com"
-  }
+    {
+      "name": "AWS Cloud Practitioner",
+      "issuer": "Amazon Web Services",
+      "year": "2024"
+    }
+  ]
 }

@@ -18,17 +18,32 @@ async function loadConfig() {
   }
 }
 
+async function loadResume() {
+  try {
+    const response = await fetch("./api/resume");
+    if (!response.ok) {
+      return resumeData;
+    }
+
+    return await response.json();
+  } catch {
+    return resumeData;
+  }
+}
+
 function App() {
   const [siteConfig, setSiteConfig] = useState(siteConfigSeed);
+  const [resumeContent, setResumeContent] = useState(resumeData);
   const [activeExperienceId, setActiveExperienceId] = useState(resumeData.experience[0]?.id ?? "");
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
     let active = true;
 
-    loadConfig().then((config) => {
+    Promise.all([loadConfig(), loadResume()]).then(([config, resume]) => {
       if (active) {
         setSiteConfig(config);
+        setResumeContent(resume);
       }
     });
 
@@ -42,8 +57,8 @@ function App() {
   }, [isDarkMode]);
 
   const activeExperience = useMemo(
-    () => resumeData.experience.find((item) => item.id === activeExperienceId) ?? resumeData.experience[0],
-    [activeExperienceId]
+    () => resumeContent.experience.find((item) => item.id === activeExperienceId) ?? resumeContent.experience[0],
+    [activeExperienceId, resumeContent.experience]
   );
 
   const hasDashboardRoute =
@@ -53,12 +68,12 @@ function App() {
   const ThemeComponent = themeRegistry[siteConfig.theme] ?? themeRegistry.default;
 
   if (hasDashboardRoute) {
-    return <Dashboard initialConfig={siteConfig} onSave={setSiteConfig} resume={resumeData} />;
+    return <Dashboard initialConfig={siteConfig} onSave={setSiteConfig} resume={resumeContent} onSaveResume={setResumeContent} />;
   }
 
   return (
     <ThemeComponent
-      resume={resumeData}
+      resume={resumeContent}
       config={siteConfig}
       activeExperienceId={activeExperience?.id ?? activeExperienceId}
       onSelectExperience={setActiveExperienceId}
