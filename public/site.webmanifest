@@ -1,0 +1,10 @@
+{
+  "name": "Teodor Toni | Resume",
+  "short_name": "Teodor Toni",
+  "description": "React and TypeScript resume portfolio for a senior software engineer.",
+  "start_url": "/resume/",
+  "display": "standalone",
+  "background_color": "#091826",
+  "theme_color": "#0ea5e9",
+  "icons": []
+}

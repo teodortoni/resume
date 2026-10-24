@@ -1,0 +1,29 @@
+@media print {
+  body {
+    background: white !important;
+    color: #111827 !important;
+  }
+
+  .site-header,
+  .dashboard-shell,
+  .projects-controls,
+  .hero-art,
+  .contact-actions,
+  .menu-toggle {
+    display: none !important;
+  }
+
+  .section,
+  .experience-card,
+  .project-card,
+  .skills-row {
+    break-inside: avoid;
+    box-shadow: none !important;
+    background: white !important;
+  }
+
+  a {
+    color: #111827 !important;
+    text-decoration: underline;
+  }
+}

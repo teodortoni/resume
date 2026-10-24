@@ -1,0 +1,10 @@
+{
+  "siteTitle": "Teodor Toni",
+  "theme": "modern",
+  "showProfile": true,
+  "showExperience": true,
+  "showProjects": true,
+  "showSkills": true,
+  "showCertifications": true,
+  "resumePath": "/resume/assets/resume.pdf"
+}
