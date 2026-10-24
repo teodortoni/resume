@@ -25,7 +25,7 @@ function DefaultTheme({ resume, config, activeExperienceId, onSelectExperience, 
         {config.showSkills && <SkillsSection skills={resume.skills} />}
         {config.showProjects && <ProjectsSection items={resume.projects} />}
         {config.showCertifications && resume.certifications?.length > 0 && (
-          <section className="section" aria-labelledby="certifications-heading">
+          <section id="certifications" className="section" aria-labelledby="certifications-heading">
             <div className="container">
               <div className="section-heading-block section-heading-block--compact">
                 <span className="section-heading-label">Credentials</span>

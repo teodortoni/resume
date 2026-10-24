@@ -8,7 +8,16 @@ export type Profile = {
   name: string;
   title: string;
   location?: string;
-  authorization?: string;
+  authorization?: {
+    authorizedToWorkInUS?: {
+      enabled: boolean;
+      text: string;
+    };
+    noSponsorshipRequired?: {
+      enabled: boolean;
+      text: string;
+    };
+  } | string;
   jobPreference?: string;
   summary: string;
   yearsOfExperience: number;

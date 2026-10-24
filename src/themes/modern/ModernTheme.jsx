@@ -57,7 +57,7 @@ function ModernTheme({ resume, config, activeExperienceId, onSelectExperience, i
         )}
 
         {config.showCertifications && resume.certifications?.length > 0 && (
-          <section className="section" aria-labelledby="modern-certifications-heading">
+          <section id="certifications" className="section" aria-labelledby="modern-certifications-heading">
             <div className="container">
               <div className="section-heading-block section-heading-block--compact">
                 <span className="section-heading-label">Credentials</span>

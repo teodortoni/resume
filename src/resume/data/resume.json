@@ -3,7 +3,16 @@
     "name": "Teodor Toni",
     "title": "Senior Full-Stack Software Engineer",
     "location": "Venice, FL",
-    "authorization": "Authorized to work in the US · No sponsorship required",
+    "authorization": {
+      "authorizedToWorkInUS": {
+        "enabled": true,
+        "text": "Authorized to work in the US"
+      },
+      "noSponsorshipRequired": {
+        "enabled": true,
+        "text": "No sponsorship required"
+      }
+    },
     "jobPreference": "Remote US",
     "summary": "Building reliable backend systems, APIs, and production web applications.",
     "yearsOfExperience": 15,

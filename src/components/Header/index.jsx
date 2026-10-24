@@ -13,12 +13,24 @@ function Header({ config, profile, isDarkMode, onToggleTheme }) {
   const [open, setOpen] = useState(false);
   const siteName = config.siteTitle || profile?.name || "Developer";
 
-  const navItems = useMemo(() => {
-    const items = [{ label: "Home", href: "#home" }];
+  const humanizeSectionName = (name) => name.replace(/([a-z])([A-Z])/g, "$1 $2").trim();
+  const sectionNameToId = (name) => name.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
 
-    if (config.showExperience) items.push({ label: "Experience", href: "#experience" });
-    if (config.showSkills) items.push({ label: "Skills", href: "#skills" });
-    if (config.showProjects) items.push({ label: "Projects", href: "#projects" });
+  const navItems = useMemo(() => {
+    const items = Object.keys(config)
+      .filter((key) => /^show[A-Z]/.test(key) && config[key] === true)
+      .map((key) => {
+        const sectionName = key.replace(/^show/, "");
+
+        if (sectionName === "Profile") {
+          return { label: "Home", href: "#home" };
+        }
+
+        return {
+          label: humanizeSectionName(sectionName),
+          href: `#${sectionNameToId(sectionName)}`
+        };
+      });
 
     items.push({ label: "Contact", href: "#contact" });
     return items;

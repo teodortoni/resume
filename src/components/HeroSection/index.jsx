@@ -17,7 +17,24 @@ function HeroSection({ config, profile }) {
   const education = profile?.education;
   const location = profile?.location;
   const jobPreference = profile?.jobPreference;
-  const authorization = profile?.authorization;
+  const authorization = (() => {
+    const value = profile?.authorization;
+    if (!value) return "";
+
+    if (typeof value === "string") {
+      return value;
+    }
+
+    const parts = [];
+    if (value.authorizedToWorkInUS?.enabled && value.authorizedToWorkInUS?.text) {
+      parts.push(value.authorizedToWorkInUS.text);
+    }
+    if (value.noSponsorshipRequired?.enabled && value.noSponsorshipRequired?.text) {
+      parts.push(value.noSponsorshipRequired.text);
+    }
+
+    return parts.join(" · ");
+  })();
   const languages = (profile?.languages ?? []).filter((language) => language?.name).map((language) => language.name).join(", ");
 
   const metaItems = [
