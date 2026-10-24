@@ -1,17 +1,29 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Award,
+  BookOpenText,
   BriefcaseBusiness,
+  Clock3,
+  ChevronRight,
   Check,
   Copy,
+  Flag,
+  FileText,
   FolderKanban,
+  GitBranch,
+  GraduationCap,
+  LayoutDashboard,
+  Mail,
+  MapPin,
   PencilLine,
   Plus,
   Save,
   Settings2,
+  ShieldCheck,
   Sparkles,
   Trash2,
-  UserRound
+  UserRound,
+  Waypoints
 } from "lucide-react";
 import { MAJOR_WORLD_LANGUAGES, formatLanguageLabel } from "../resume/data/languages";
 import siteConfigSeed from "../resume/data/site.config.json";
@@ -186,8 +198,51 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
     setResumeDraft(resume);
   }, [resume]);
 
-  const profileSummary = useMemo(
-    () => `${resumeDraft?.profile?.name || "Your profile"} · ${resumeDraft?.profile?.title || "Professional summary"}`,
+  const normalizeAuthorization = (authorizationValue) => {
+    const defaults = {
+      authorizedToWorkInUS: {
+        enabled: false,
+        text: "Authorized to work in the US"
+      },
+      noSponsorshipRequired: {
+        enabled: false,
+        text: "No sponsorship required"
+      }
+    };
+
+    if (!authorizationValue) {
+      return defaults;
+    }
+
+    if (typeof authorizationValue === "string") {
+      return {
+        authorizedToWorkInUS: {
+          ...defaults.authorizedToWorkInUS,
+          enabled: authorizationValue.includes(defaults.authorizedToWorkInUS.text)
+        },
+        noSponsorshipRequired: {
+          ...defaults.noSponsorshipRequired,
+          enabled: authorizationValue.includes(defaults.noSponsorshipRequired.text)
+        }
+      };
+    }
+
+    return {
+      authorizedToWorkInUS: {
+        text: authorizationValue.authorizedToWorkInUS?.text || defaults.authorizedToWorkInUS.text,
+        enabled: Boolean(authorizationValue.authorizedToWorkInUS?.enabled)
+      },
+      noSponsorshipRequired: {
+        text: authorizationValue.noSponsorshipRequired?.text || defaults.noSponsorshipRequired.text,
+        enabled: Boolean(authorizationValue.noSponsorshipRequired?.enabled)
+      }
+    };
+  };
+
+  const profileName = useMemo(() => resumeDraft?.profile?.name || "Your profile", [resumeDraft]);
+  const profileTitle = useMemo(() => resumeDraft?.profile?.title || "Professional summary", [resumeDraft]);
+  const authorizationFlags = useMemo(
+    () => normalizeAuthorization(resumeDraft?.profile?.authorization),
     [resumeDraft]
   );
 
@@ -245,6 +300,27 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
     }));
   };
 
+  const updateAuthorizationFlag = (flag, checked) => {
+    setResumeDraft((current) => {
+      const currentAuthorization = normalizeAuthorization(current.profile?.authorization);
+      const nextAuthorization = {
+        ...currentAuthorization,
+        [flag]: {
+          ...currentAuthorization[flag],
+          enabled: checked
+        }
+      };
+
+      return {
+        ...current,
+        profile: {
+          ...(current.profile ?? {}),
+          authorization: nextAuthorization
+        }
+      };
+    });
+  };
+
   const updateExperienceField = (index, field, value) => {
     setResumeDraft((current) => ({
       ...current,
@@ -277,6 +353,59 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
       projects: (current.projects ?? []).map((project, projectIndex) => projectIndex === index
         ? { ...project, [field]: value }
         : project)
+    }));
+  };
+
+  const updateProjectTool = (projectIndex, toolIndex, nextValue) => {
+    setResumeDraft((current) => ({
+      ...current,
+      projects: (current.projects ?? []).map((project, index) => {
+        if (index !== projectIndex) {
+          return project;
+        }
+
+        return {
+          ...project,
+          tools: (project.tools ?? []).map((tool, currentToolIndex) => currentToolIndex === toolIndex ? nextValue : tool)
+        };
+      })
+    }));
+  };
+
+  const addProjectTool = (projectIndex, rawValue) => {
+    const nextValue = rawValue.trim();
+    if (!nextValue) {
+      return;
+    }
+
+    setResumeDraft((current) => ({
+      ...current,
+      projects: (current.projects ?? []).map((project, index) => {
+        if (index !== projectIndex) {
+          return project;
+        }
+
+        return {
+          ...project,
+          tools: [...(project.tools ?? []), nextValue]
+        };
+      })
+    }));
+  };
+
+  const removeProjectTool = (projectIndex, toolIndex) => {
+    setResumeDraft((current) => ({
+      ...current,
+      projects: (current.projects ?? []).map((project, index) => {
+        if (index !== projectIndex) {
+          return project;
+        }
+
+        return {
+          ...project,
+          tools: (project.tools ?? []).filter((_, currentToolIndex) => currentToolIndex !== toolIndex)
+        };
+      })
     }));
   };
 
@@ -625,6 +754,34 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
     certifications: Award
   };
 
+  const sectionHeadings = {
+    siteSettings: { kicker: "Studio", title: "Site settings editor" },
+    profile: { kicker: "Profile", title: "Profile editor" },
+    experience: { kicker: "Experience", title: "Career timeline editor" },
+    projects: { kicker: "Projects", title: "Portfolio editor" },
+    skills: { kicker: "Skills", title: "Skills editor" },
+    certifications: { kicker: "Credentials", title: "Certifications editor" }
+  };
+
+  const activeHeading = sectionHeadings[selectedSection] ?? sectionHeadings.siteSettings;
+  const visibilityToggles = useMemo(
+    () =>
+      Object.keys(siteDraft ?? {})
+        .filter((key) => /^show[A-Z]/.test(key) && typeof siteDraft[key] === "boolean")
+        .map((name) => {
+          const rawSection = name.replace(/^show/, "");
+          const sectionKey = rawSection.charAt(0).toLowerCase() + rawSection.slice(1);
+          const Icon = sectionIcons[sectionKey] ?? Settings2;
+
+          return {
+            name,
+            label: rawSection.replace(/([a-z])([A-Z])/g, "$1 $2").trim(),
+            icon: Icon
+          };
+        }),
+    [siteDraft]
+  );
+
   const isSectionDirty = (sectionKey) => {
     switch (sectionKey) {
       case "siteSettings":
@@ -657,17 +814,11 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
     const Icon = sectionIcons[sectionKey] ?? Settings2;
 
     return (
-      <button
-        type="button"
-        className="dashboard-section-toggle"
-        onClick={() => toggleSection(sectionKey)}
-        aria-expanded={expanded[sectionKey]}
-      >
-        <span>{label}</span>
+      <div className="dashboard-section-toggle dashboard-section-toggle-static" aria-label={label}>
         <span className="dashboard-section-toggle-meta" aria-label={meta || label}>
           <Icon size={14} aria-hidden="true" />
         </span>
-      </button>
+      </div>
     );
   };
 
@@ -699,10 +850,20 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
   return (
     <div className="dashboard-shell">
       <aside className="dashboard-sidebar">
+        <div className="dashboard-sidebar-top">
+          <span className="dashboard-top-link" aria-label="Dashboard">
+            <span>Dashboard</span>
+          </span>
+        </div>
+
         <div className="dashboard-brand-block">
-          <p className="dashboard-label">Resume Atelier</p>
-          <h1>Control room</h1>
-          <p className="dashboard-identity">{profileSummary}</p>
+          <div className="dashboard-portrait-shell" aria-hidden="true">
+            <div className="dashboard-portrait-frame">
+              <img src="/resume/assets/portrait.jpg" alt="" />
+            </div>
+          </div>
+          <h1 className="dashboard-profile-name">{profileName}</h1>
+          <p className="dashboard-profile-title">{profileTitle}</p>
         </div>
 
         <nav className="dashboard-nav" aria-label="Dashboard sections">
@@ -713,28 +874,39 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
             { key: "projects", label: "Projects" },
             { key: "skills", label: "Skills" },
             { key: "certifications", label: "Certifications" }
-          ].map((item) => (
-            <button
-              key={item.key}
-              type="button"
-              className={selectedSection === item.key ? "dashboard-nav-item is-active" : "dashboard-nav-item"}
-              onClick={() => setSelectedSection(item.key)}
-            >
-              {item.label}
-            </button>
-          ))}
+          ].map((item) => {
+            const Icon = sectionIcons[item.key] ?? Settings2;
+
+            return (
+              <button
+                key={item.key}
+                type="button"
+                className={selectedSection === item.key ? "dashboard-nav-item is-active" : "dashboard-nav-item"}
+                onClick={() => setSelectedSection(item.key)}
+              >
+                <span className="dashboard-nav-item-main">
+                  <Icon size={14} aria-hidden="true" />
+                  <span>{item.label}</span>
+                </span>
+                <ChevronRight size={13} className="dashboard-nav-arrow" aria-hidden="true" />
+              </button>
+            );
+          })}
         </nav>
 
-        <button type="button" className="dashboard-back" onClick={() => setSelectedSection("siteSettings")}>
-          Back to resume
-        </button>
+        <footer className="dashboard-sidebar-footer">
+          <a className="dashboard-back" href="./" title="Open and review the resume">
+            <FileText size={15} aria-hidden="true" />
+            <span>Review resume</span>
+          </a>
+        </footer>
       </aside>
 
       <main className="dashboard-panel">
         <header className="dashboard-header">
           <div>
-            <p className="dashboard-kicker">Studio</p>
-            <h2>Portfolio editor</h2>
+            <p className="dashboard-kicker">{activeHeading.kicker}</p>
+            <h2>{activeHeading.title}</h2>
           </div>
         </header>
 
@@ -747,49 +919,51 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
 
           {expanded.siteSettings && (
             <div className="dashboard-section-body">
-              <div className="dashboard-grid">
-                <label>
-                  Site title
-                  <input name="siteTitle" value={siteDraft.siteTitle ?? ""} onChange={updateSiteField} />
-                </label>
+              <div className="dashboard-site-groups">
+                <div className="dashboard-grid">
+                  <label>
+                    <input aria-label="Site title" placeholder="Site title" name="siteTitle" value={siteDraft.siteTitle ?? ""} onChange={updateSiteField} />
+                  </label>
 
-                <label>
-                  Theme
-                  <select name="theme" value={siteDraft.theme || "default"} onChange={updateSiteField}>
-                    <option value="default">Default</option>
-                    <option value="modern">Modern</option>
-                  </select>
-                </label>
+                  <label>
+                    <select aria-label="Theme" name="theme" value={siteDraft.theme || "default"} onChange={updateSiteField}>
+                      <option value="default">Default theme</option>
+                      <option value="modern">Modern theme</option>
+                    </select>
+                  </label>
 
-                <label>
-                  Resume PDF path
-                  <input name="resumePath" value={siteDraft.resumePath ?? ""} onChange={updateSiteField} />
-                </label>
+                  <label>
+                    <input aria-label="Resume PDF path" placeholder="Resume PDF path" name="resumePath" value={siteDraft.resumePath ?? ""} onChange={updateSiteField} />
+                  </label>
+                </div>
 
-                <label className="checkbox-row">
-                  <input type="checkbox" name="showProfile" checked={Boolean(siteDraft.showProfile)} onChange={updateSiteField} />
-                  Show profile
-                </label>
+                <div className="dashboard-site-divider" />
 
-                <label className="checkbox-row">
-                  <input type="checkbox" name="showExperience" checked={Boolean(siteDraft.showExperience)} onChange={updateSiteField} />
-                  Show experience
-                </label>
+                <div className="dashboard-site-visibility">
+                  <p className="dashboard-mini-heading">Visible sections</p>
+                  <div className="dashboard-visibility-grid">
+                    {visibilityToggles.map((toggle) => {
+                      const ToggleIcon = toggle.icon;
 
-                <label className="checkbox-row">
-                  <input type="checkbox" name="showProjects" checked={Boolean(siteDraft.showProjects)} onChange={updateSiteField} />
-                  Show projects
-                </label>
-
-                <label className="checkbox-row">
-                  <input type="checkbox" name="showSkills" checked={Boolean(siteDraft.showSkills)} onChange={updateSiteField} />
-                  Show skills
-                </label>
-
-                <label className="checkbox-row">
-                  <input type="checkbox" name="showCertifications" checked={Boolean(siteDraft.showCertifications)} onChange={updateSiteField} />
-                  Show certifications
-                </label>
+                      return (
+                        <label key={toggle.name} className="dashboard-visibility-toggle">
+                          <span className="dashboard-visibility-main">
+                            <span className="dashboard-visibility-icon" aria-hidden="true">
+                              <ToggleIcon size={14} />
+                            </span>
+                            <span>{toggle.label}</span>
+                          </span>
+                          <input
+                            type="checkbox"
+                            name={toggle.name}
+                            checked={Boolean(siteDraft[toggle.name])}
+                            onChange={updateSiteField}
+                          />
+                        </label>
+                      );
+                    })}
+                  </div>
+                </div>
               </div>
             </div>
           )}
@@ -805,121 +979,259 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
 
           {expanded.profile && (
             <div className="dashboard-section-body">
-              <div className="dashboard-grid">
-                <label>
-                  Name
-                  <input value={resumeDraft.profile?.name ?? ""} onChange={(event) => updateProfileField("name", event.target.value)} />
-                </label>
+              <div className="dashboard-profile-cards">
+                <section className="dashboard-profile-card profile-card-basics">
+                  <h3 className="dashboard-subcard-title">Basics</h3>
+                  <div className="dashboard-grid">
+                    <label className="dashboard-field-inline">
+                      <span className="dashboard-field-icon" aria-hidden="true"><UserRound size={14} /></span>
+                      <input
+                        aria-label="Name"
+                        placeholder="Name"
+                        value={resumeDraft.profile?.name ?? ""}
+                        onChange={(event) => updateProfileField("name", event.target.value)}
+                      />
+                    </label>
 
-                <label>
-                  Title
-                  <input value={resumeDraft.profile?.title ?? ""} onChange={(event) => updateProfileField("title", event.target.value)} />
-                </label>
+                    <label className="dashboard-field-inline">
+                      <span className="dashboard-field-icon" aria-hidden="true"><BriefcaseBusiness size={14} /></span>
+                      <input
+                        aria-label="Title"
+                        placeholder="Title"
+                        value={resumeDraft.profile?.title ?? ""}
+                        onChange={(event) => updateProfileField("title", event.target.value)}
+                      />
+                    </label>
 
-                <label>
-                  Location
-                  <input value={resumeDraft.profile?.location ?? ""} onChange={(event) => updateProfileField("location", event.target.value)} />
-                </label>
+                    <label className="dashboard-field-inline">
+                      <span className="dashboard-field-icon" aria-hidden="true"><MapPin size={14} /></span>
+                      <input
+                        aria-label="Location"
+                        placeholder="Location"
+                        value={resumeDraft.profile?.location ?? ""}
+                        onChange={(event) => updateProfileField("location", event.target.value)}
+                      />
+                    </label>
 
-                <label>
-                  Years of experience
-                  <input type="number" value={resumeDraft.profile?.yearsOfExperience ?? 0} onChange={(event) => updateProfileField("yearsOfExperience", Number(event.target.value))} />
-                </label>
+                    <label className="dashboard-field-inline">
+                      <span className="dashboard-field-icon" aria-hidden="true"><Clock3 size={14} /></span>
+                      <input
+                        aria-label="Years of experience"
+                        placeholder="Years of experience"
+                        type="number"
+                        value={resumeDraft.profile?.yearsOfExperience ?? 0}
+                        onChange={(event) => updateProfileField("yearsOfExperience", Number(event.target.value))}
+                      />
+                    </label>
 
-                <label>
-                  Authorization
-                  <input value={resumeDraft.profile?.authorization ?? ""} onChange={(event) => updateProfileField("authorization", event.target.value)} />
-                </label>
+                    <div className="dashboard-auth-field full-width">
+                      <div className="dashboard-auth-options">
+                        <label className="dashboard-visibility-toggle dashboard-auth-toggle">
+                          <span className="dashboard-visibility-main">
+                            <span className="dashboard-visibility-icon" aria-hidden="true">
+                              <ShieldCheck size={14} />
+                            </span>
+                            <span>{authorizationFlags.authorizedToWorkInUS.text}</span>
+                          </span>
+                          <input
+                            type="checkbox"
+                            checked={authorizationFlags.authorizedToWorkInUS.enabled}
+                            onChange={(event) => updateAuthorizationFlag("authorizedToWorkInUS", event.target.checked)}
+                          />
+                        </label>
+                        <label className="dashboard-visibility-toggle dashboard-auth-toggle">
+                          <span className="dashboard-visibility-main">
+                            <span className="dashboard-visibility-icon" aria-hidden="true">
+                              <ShieldCheck size={14} />
+                            </span>
+                            <span>{authorizationFlags.noSponsorshipRequired.text}</span>
+                          </span>
+                          <input
+                            type="checkbox"
+                            checked={authorizationFlags.noSponsorshipRequired.enabled}
+                            onChange={(event) => updateAuthorizationFlag("noSponsorshipRequired", event.target.checked)}
+                          />
+                        </label>
+                      </div>
+                    </div>
 
-                <label>
-                  Job preference
-                  <input value={resumeDraft.profile?.jobPreference ?? ""} onChange={(event) => updateProfileField("jobPreference", event.target.value)} />
-                </label>
+                    <label className="dashboard-field-inline">
+                      <span className="dashboard-field-icon" aria-hidden="true"><Waypoints size={14} /></span>
+                      <input
+                        aria-label="Job preference"
+                        placeholder="Job preference"
+                        value={resumeDraft.profile?.jobPreference ?? ""}
+                        onChange={(event) => updateProfileField("jobPreference", event.target.value)}
+                      />
+                    </label>
+                  </div>
+                </section>
 
-                <label className="full-width">
-                  Summary
-                  <textarea rows="4" value={resumeDraft.profile?.summary ?? ""} onChange={(event) => updateProfileField("summary", event.target.value)} />
-                </label>
+                <section className="dashboard-profile-card profile-card-summary">
+                  <h3 className="dashboard-subcard-title">Summary</h3>
+                  <div className="dashboard-grid">
+                    <label className="full-width dashboard-field-inline dashboard-field-inline-textarea">
+                      <span className="dashboard-field-icon" aria-hidden="true"><FileText size={14} /></span>
+                      <textarea
+                        aria-label="Summary"
+                        placeholder="Summary"
+                        rows="4"
+                        value={resumeDraft.profile?.summary ?? ""}
+                        onChange={(event) => updateProfileField("summary", event.target.value)}
+                      />
+                    </label>
+                  </div>
+                </section>
 
-                <label>
-                  Education degree
-                  <input value={resumeDraft.profile?.education?.degree ?? ""} onChange={(event) => updateEducationField("degree", event.target.value)} />
-                </label>
+                <section className="dashboard-profile-card profile-card-education">
+                  <h3 className="dashboard-subcard-title">Education</h3>
+                  <div className="dashboard-grid">
+                    <label className="dashboard-field-inline">
+                      <span className="dashboard-field-icon" aria-hidden="true"><GraduationCap size={14} /></span>
+                      <input
+                        aria-label="Degree"
+                        placeholder="Degree"
+                        value={resumeDraft.profile?.education?.degree ?? ""}
+                        onChange={(event) => updateEducationField("degree", event.target.value)}
+                      />
+                    </label>
 
-                <label>
-                  Major
-                  <input value={resumeDraft.profile?.education?.major ?? ""} onChange={(event) => updateEducationField("major", event.target.value)} />
-                </label>
+                    <label className="dashboard-field-inline">
+                      <span className="dashboard-field-icon" aria-hidden="true"><BookOpenText size={14} /></span>
+                      <input
+                        aria-label="Major"
+                        placeholder="Major"
+                        value={resumeDraft.profile?.education?.major ?? ""}
+                        onChange={(event) => updateEducationField("major", event.target.value)}
+                      />
+                    </label>
 
-                <label>
-                  School
-                  <input value={resumeDraft.profile?.education?.school ?? ""} onChange={(event) => updateEducationField("school", event.target.value)} />
-                </label>
+                    <label className="dashboard-field-inline">
+                      <span className="dashboard-field-icon" aria-hidden="true"><BriefcaseBusiness size={14} /></span>
+                      <input
+                        aria-label="School"
+                        placeholder="School"
+                        value={resumeDraft.profile?.education?.school ?? ""}
+                        onChange={(event) => updateEducationField("school", event.target.value)}
+                      />
+                    </label>
+                  </div>
+                </section>
 
-                <label>
-                  Email
-                  <input value={resumeDraft.profile?.email ?? ""} onChange={(event) => updateProfileField("email", event.target.value)} />
-                </label>
-
-                <div className="dashboard-collection-item" style={{ gridColumn: "1 / -1" }}>
+                <section className="dashboard-profile-card profile-card-languages">
                   <div className="dashboard-item-toolbar">
-                    <span>Languages</span>
+                    <h3 className="dashboard-subcard-title">Languages</h3>
                     <div className="dashboard-item-actions">
-                      <button type="button" className="dashboard-inline-button dashboard-inline-button-small" onClick={() => duplicateLanguage((resumeDraft.profile?.languages ?? []).length - 1)}>
-                        Duplicate
+                      <button
+                        type="button"
+                        className="dashboard-icon-button dashboard-icon-button-compact"
+                        onClick={() => duplicateLanguage((resumeDraft.profile?.languages ?? []).length - 1)}
+                        title="Duplicate language"
+                        aria-label="Duplicate language"
+                      >
+                        <Copy size={13} aria-hidden="true" />
                       </button>
-                      <button type="button" className="dashboard-inline-button dashboard-inline-button-small" onClick={addLanguage}>
-                        Add
+                      <button
+                        type="button"
+                        className="dashboard-icon-button dashboard-icon-button-compact"
+                        onClick={addLanguage}
+                        title="Add language"
+                        aria-label="Add language"
+                      >
+                        <Plus size={13} aria-hidden="true" />
                       </button>
                     </div>
                   </div>
 
-                  {(resumeDraft.profile?.languages ?? []).map((language, index) => (
-                    <div key={`${language.name || "language"}-${index}`} className="dashboard-grid" style={{ marginTop: "1rem" }}>
-                      <label>
-                        Name
-                        <LanguageSearchInput
-                          value={language}
-                          onSelect={(selectedLanguage) => {
-                            updateLanguage(index, {
-                              code: selectedLanguage.code,
-                              name: selectedLanguage.name,
-                              nativeName: selectedLanguage.nativeName,
-                              direction: selectedLanguage.direction
-                            });
-                          }}
-                        />
-                      </label>
+                  <div className="dashboard-language-editor">
+                    {(resumeDraft.profile?.languages ?? []).map((language, index) => (
+                      <div key={`${language.name || "language"}-${index}`} className="dashboard-grid dashboard-language-row">
+                        <label className="dashboard-field-inline">
+                          <span className="dashboard-field-icon" aria-hidden="true">
+                            {language.code ? (
+                              <span className="dashboard-language-code-icon">{language.code.toUpperCase()}</span>
+                            ) : (
+                              <Flag size={14} />
+                            )}
+                          </span>
+                          <LanguageSearchInput
+                            value={language}
+                            onSelect={(selectedLanguage) => {
+                              updateLanguage(index, {
+                                code: selectedLanguage.code,
+                                name: selectedLanguage.name,
+                                nativeName: selectedLanguage.nativeName,
+                                direction: selectedLanguage.direction
+                              });
+                            }}
+                          />
+                        </label>
 
-                      <label>
-                        Proficiency
-                        <select value={language.proficiency ?? "Fluent"} onChange={(event) => updateLanguage(index, { proficiency: event.target.value })}>
-                          <option value="Native">Native</option>
-                          <option value="Fluent">Fluent</option>
-                          <option value="Professional">Professional</option>
-                          <option value="Conversational">Conversational</option>
-                          <option value="Basic">Basic</option>
-                        </select>
-                      </label>
+                        <label className="dashboard-field-inline">
+                          <span className="dashboard-field-icon" aria-hidden="true"><Sparkles size={14} /></span>
+                          <select
+                            aria-label="Language proficiency"
+                            value={language.proficiency ?? "Fluent"}
+                            onChange={(event) => updateLanguage(index, { proficiency: event.target.value })}
+                          >
+                            <option value="Native">Native</option>
+                            <option value="Fluent">Fluent</option>
+                            <option value="Professional">Professional</option>
+                            <option value="Conversational">Conversational</option>
+                            <option value="Basic">Basic</option>
+                          </select>
+                        </label>
 
-                      <div style={{ gridColumn: "1 / -1", display: "flex", justifyContent: "flex-end" }}>
-                        <button type="button" className="dashboard-remove-button" onClick={() => removeLanguage(index)}>
-                          Remove
-                        </button>
+                        <div className="dashboard-language-row-actions">
+                          <button
+                            type="button"
+                            className="dashboard-icon-button dashboard-icon-button-compact dashboard-remove-icon-button"
+                            onClick={() => removeLanguage(index)}
+                            title="Remove language"
+                            aria-label="Remove language"
+                          >
+                            <Trash2 size={13} aria-hidden="true" />
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                </section>
 
-                <label>
-                  GitHub URL
-                  <input value={resumeDraft.profile?.socialLinks?.github ?? ""} onChange={(event) => updateSocialField("github", event.target.value)} />
-                </label>
+                <section className="dashboard-profile-card profile-card-contact">
+                  <h3 className="dashboard-subcard-title">Contact & social</h3>
+                  <div className="dashboard-grid">
+                    <label className="dashboard-field-inline">
+                      <span className="dashboard-field-icon" aria-hidden="true"><Mail size={14} /></span>
+                      <input
+                        aria-label="Email"
+                        placeholder="Email"
+                        value={resumeDraft.profile?.email ?? ""}
+                        onChange={(event) => updateProfileField("email", event.target.value)}
+                      />
+                    </label>
 
-                <label>
-                  LinkedIn URL
-                  <input value={resumeDraft.profile?.socialLinks?.linkedin ?? ""} onChange={(event) => updateSocialField("linkedin", event.target.value)} />
-                </label>
+                    <label className="dashboard-field-inline">
+                      <span className="dashboard-field-icon" aria-hidden="true"><GitBranch size={14} /></span>
+                      <input
+                        aria-label="GitHub URL"
+                        placeholder="GitHub URL"
+                        value={resumeDraft.profile?.socialLinks?.github ?? ""}
+                        onChange={(event) => updateSocialField("github", event.target.value)}
+                      />
+                    </label>
+
+                    <label className="dashboard-field-inline">
+                      <span className="dashboard-field-icon" aria-hidden="true"><BriefcaseBusiness size={14} /></span>
+                      <input
+                        aria-label="LinkedIn URL"
+                        placeholder="LinkedIn URL"
+                        value={resumeDraft.profile?.socialLinks?.linkedin ?? ""}
+                        onChange={(event) => updateSocialField("linkedin", event.target.value)}
+                      />
+                    </label>
+                  </div>
+                </section>
               </div>
             </div>
           )}
@@ -960,43 +1272,49 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
                       Role {index + 1}
                     </span>
                     <div className="dashboard-item-actions">
-                      <button type="button" className="dashboard-inline-button dashboard-inline-button-small" onClick={() => duplicateExperience(index)}>
-                        Duplicate
+                      <button
+                        type="button"
+                        className="dashboard-icon-button dashboard-icon-button-compact"
+                        onClick={() => duplicateExperience(index)}
+                        title="Duplicate role"
+                        aria-label="Duplicate role"
+                      >
+                        <Copy size={13} aria-hidden="true" />
                       </button>
-                      <button type="button" className="dashboard-remove-button" onClick={() => removeExperience(index)}>
-                        Remove
+                      <button
+                        type="button"
+                        className="dashboard-icon-button dashboard-icon-button-compact dashboard-remove-icon-button"
+                        onClick={() => removeExperience(index)}
+                        title="Remove role"
+                        aria-label="Remove role"
+                      >
+                        <Trash2 size={13} aria-hidden="true" />
                       </button>
                     </div>
                   </div>
                   <div className="dashboard-grid">
                     <label>
-                      Company
-                      <input value={item.company ?? ""} onChange={(event) => updateExperienceField(index, "company", event.target.value)} />
+                      <input aria-label="Company" placeholder="Company" value={item.company ?? ""} onChange={(event) => updateExperienceField(index, "company", event.target.value)} />
                     </label>
 
                     <label>
-                      Division
-                      <input value={item.division ?? ""} onChange={(event) => updateExperienceField(index, "division", event.target.value)} />
+                      <input aria-label="Division" placeholder="Division" value={item.division ?? ""} onChange={(event) => updateExperienceField(index, "division", event.target.value)} />
                     </label>
 
                     <label>
-                      Role
-                      <input value={item.title ?? ""} onChange={(event) => updateExperienceField(index, "title", event.target.value)} />
+                      <input aria-label="Role" placeholder="Role" value={item.title ?? ""} onChange={(event) => updateExperienceField(index, "title", event.target.value)} />
                     </label>
 
                     <label>
-                      Dates
-                      <input value={item.dates ?? ""} onChange={(event) => updateExperienceField(index, "dates", event.target.value)} />
+                      <input aria-label="Dates" placeholder="Dates" value={item.dates ?? ""} onChange={(event) => updateExperienceField(index, "dates", event.target.value)} />
                     </label>
 
                     <label className="full-width">
-                      Project name
-                      <input value={item.projects?.[0]?.projectName ?? ""} onChange={(event) => updateExperienceProjectField(index, "projectName", event.target.value)} />
+                      <input aria-label="Project name" placeholder="Project name" value={item.projects?.[0]?.projectName ?? ""} onChange={(event) => updateExperienceProjectField(index, "projectName", event.target.value)} />
                     </label>
 
                     <label className="full-width">
-                      Project summary
-                      <textarea rows="4" value={item.projects?.[0]?.projectDescription ?? ""} onChange={(event) => updateExperienceProjectField(index, "projectDescription", event.target.value)} />
+                      <textarea aria-label="Project summary" placeholder="Project summary" rows="4" value={item.projects?.[0]?.projectDescription ?? ""} onChange={(event) => updateExperienceProjectField(index, "projectDescription", event.target.value)} />
                     </label>
                   </div>
                 </div>
@@ -1040,48 +1358,89 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
                       Project {index + 1}
                     </span>
                     <div className="dashboard-item-actions">
-                      <button type="button" className="dashboard-inline-button dashboard-inline-button-small" onClick={() => duplicateProject(index)}>
-                        Duplicate
+                      <button
+                        type="button"
+                        className="dashboard-icon-button dashboard-icon-button-compact"
+                        onClick={() => duplicateProject(index)}
+                        title="Duplicate project"
+                        aria-label="Duplicate project"
+                      >
+                        <Copy size={13} aria-hidden="true" />
                       </button>
-                      <button type="button" className="dashboard-remove-button" onClick={() => removeProject(index)}>
-                        Remove
+                      <button
+                        type="button"
+                        className="dashboard-icon-button dashboard-icon-button-compact dashboard-remove-icon-button"
+                        onClick={() => removeProject(index)}
+                        title="Remove project"
+                        aria-label="Remove project"
+                      >
+                        <Trash2 size={13} aria-hidden="true" />
                       </button>
                     </div>
                   </div>
                   <div className="dashboard-grid">
                     <label>
-                      Title
-                      <input value={project.title ?? ""} onChange={(event) => updateProjectField(index, "title", event.target.value)} />
+                      <input aria-label="Title" placeholder="Title" value={project.title ?? ""} onChange={(event) => updateProjectField(index, "title", event.target.value)} />
                     </label>
 
                     <label>
-                      Date
-                      <input value={project.date ?? ""} onChange={(event) => updateProjectField(index, "date", event.target.value)} />
+                      <input aria-label="Date" placeholder="Date" value={project.date ?? ""} onChange={(event) => updateProjectField(index, "date", event.target.value)} />
                     </label>
 
                     <label>
-                      Badge
-                      <input value={project.badge ?? ""} onChange={(event) => updateProjectField(index, "badge", event.target.value)} />
+                      <input aria-label="Badge" placeholder="Badge" value={project.badge ?? ""} onChange={(event) => updateProjectField(index, "badge", event.target.value)} />
                     </label>
 
                     <label className="full-width">
-                      Summary
-                      <textarea rows="4" value={project.summary ?? ""} onChange={(event) => updateProjectField(index, "summary", event.target.value)} />
+                      <textarea aria-label="Summary" placeholder="Summary" rows="4" value={project.summary ?? ""} onChange={(event) => updateProjectField(index, "summary", event.target.value)} />
                     </label>
 
                     <label className="full-width">
-                      Tools
-                      <input value={(project.tools ?? []).join(", ")} onChange={(event) => updateProjectField(index, "tools", event.target.value.split(",").map((item) => item.trim()).filter(Boolean))} />
+                      <span className="dashboard-chip-label" aria-label="Project tools">
+                        <Sparkles size={14} aria-hidden="true" />
+                      </span>
+                      <div className="dashboard-skill-chip-list">
+                        {(project.tools ?? []).map((tool, toolIndex) => (
+                          <span key={`${project.id || index}-tool-${toolIndex}`} className="dashboard-skill-chip">
+                            <input
+                              value={tool}
+                              onChange={(event) => updateProjectTool(index, toolIndex, event.target.value)}
+                            />
+                            <button type="button" className="dashboard-chip-remove" onClick={() => removeProjectTool(index, toolIndex)}>
+                              ×
+                            </button>
+                          </span>
+                        ))}
+                        <div className="dashboard-skill-add-row">
+                          <input
+                            type="text"
+                            placeholder="Add a tool"
+                            onKeyDown={(event) => {
+                              if (event.key === "Enter") {
+                                addProjectTool(index, event.target.value);
+                                event.target.value = "";
+                              }
+                            }}
+                          />
+                          <button type="button" className="dashboard-inline-button dashboard-inline-button-small" onClick={(event) => {
+                            const input = event.currentTarget.parentElement.querySelector("input");
+                            if (input) {
+                              addProjectTool(index, input.value);
+                              input.value = "";
+                            }
+                          }}>
+                            Add
+                          </button>
+                        </div>
+                      </div>
                     </label>
 
                     <label>
-                      GitHub URL
-                      <input value={project.githubUrl ?? ""} onChange={(event) => updateProjectField(index, "githubUrl", event.target.value)} />
+                      <input aria-label="GitHub URL" placeholder="GitHub URL" value={project.githubUrl ?? ""} onChange={(event) => updateProjectField(index, "githubUrl", event.target.value)} />
                     </label>
 
                     <label>
-                      Live URL
-                      <input value={project.liveUrl ?? ""} onChange={(event) => updateProjectField(index, "liveUrl", event.target.value)} />
+                      <input aria-label="Live URL" placeholder="Live URL" value={project.liveUrl ?? ""} onChange={(event) => updateProjectField(index, "liveUrl", event.target.value)} />
                     </label>
                   </div>
                 </div>
@@ -1110,22 +1469,35 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
                   <div className="dashboard-item-toolbar">
                     <span>Group {groupIndex + 1}</span>
                     <div className="dashboard-item-actions">
-                      <button type="button" className="dashboard-inline-button dashboard-inline-button-small" onClick={() => duplicateSkillGroup(groupIndex)}>
-                        Duplicate
+                      <button
+                        type="button"
+                        className="dashboard-icon-button dashboard-icon-button-compact"
+                        onClick={() => duplicateSkillGroup(groupIndex)}
+                        title="Duplicate skill group"
+                        aria-label="Duplicate skill group"
+                      >
+                        <Copy size={13} aria-hidden="true" />
                       </button>
-                      <button type="button" className="dashboard-remove-button" onClick={() => removeSkillGroup(groupIndex)}>
-                        Remove
+                      <button
+                        type="button"
+                        className="dashboard-icon-button dashboard-icon-button-compact dashboard-remove-icon-button"
+                        onClick={() => removeSkillGroup(groupIndex)}
+                        title="Remove skill group"
+                        aria-label="Remove skill group"
+                      >
+                        <Trash2 size={13} aria-hidden="true" />
                       </button>
                     </div>
                   </div>
                   <div className="dashboard-grid">
                     <label>
-                      Group title
-                      <input value={group.title ?? ""} onChange={(event) => updateSkillGroupField(groupIndex, "title", event.target.value)} />
+                      <input aria-label="Group title" placeholder="Group title" value={group.title ?? ""} onChange={(event) => updateSkillGroupField(groupIndex, "title", event.target.value)} />
                     </label>
 
                     <label className="full-width">
-                      <span className="dashboard-chip-label">Skills</span>
+                      <span className="dashboard-chip-label" aria-label="Skills">
+                        <Sparkles size={14} aria-hidden="true" />
+                      </span>
                       <div className="dashboard-skill-chip-list">
                         {(group.items ?? []).map((item, itemIndex) => (
                           <span key={`${group.title}-${itemIndex}`} className="dashboard-skill-chip">
@@ -1188,19 +1560,30 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
                   <div className="dashboard-item-toolbar">
                     <span>Credential {index + 1}</span>
                     <div className="dashboard-item-actions">
-                      <button type="button" className="dashboard-inline-button dashboard-inline-button-small" onClick={() => duplicateCertification(index)}>
-                        Duplicate
+                      <button
+                        type="button"
+                        className="dashboard-icon-button dashboard-icon-button-compact"
+                        onClick={() => duplicateCertification(index)}
+                        title="Duplicate credential"
+                        aria-label="Duplicate credential"
+                      >
+                        <Copy size={13} aria-hidden="true" />
                       </button>
-                      <button type="button" className="dashboard-remove-button" onClick={() => removeCertification(index)}>
-                        Remove
+                      <button
+                        type="button"
+                        className="dashboard-icon-button dashboard-icon-button-compact dashboard-remove-icon-button"
+                        onClick={() => removeCertification(index)}
+                        title="Remove credential"
+                        aria-label="Remove credential"
+                      >
+                        <Trash2 size={13} aria-hidden="true" />
                       </button>
                     </div>
                   </div>
 
                   <div className="dashboard-grid">
                     <label>
-                      Name
-                      <input value={certification.name ?? ""} onChange={(event) => setResumeDraft((current) => ({
+                      <input aria-label="Certification name" placeholder="Name" value={certification.name ?? ""} onChange={(event) => setResumeDraft((current) => ({
                         ...current,
                         certifications: (current.certifications ?? []).map((item, currentIndex) => currentIndex === index ? {
                           ...item,
@@ -1210,8 +1593,7 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
                     </label>
 
                     <label>
-                      Issuer
-                      <input value={certification.issuer ?? ""} onChange={(event) => setResumeDraft((current) => ({
+                      <input aria-label="Certification issuer" placeholder="Issuer" value={certification.issuer ?? ""} onChange={(event) => setResumeDraft((current) => ({
                         ...current,
                         certifications: (current.certifications ?? []).map((item, currentIndex) => currentIndex === index ? {
                           ...item,
@@ -1221,8 +1603,7 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
                     </label>
 
                     <label>
-                      Year
-                      <input value={certification.year ?? ""} onChange={(event) => setResumeDraft((current) => ({
+                      <input aria-label="Certification year" placeholder="Year" value={certification.year ?? ""} onChange={(event) => setResumeDraft((current) => ({
                         ...current,
                         certifications: (current.certifications ?? []).map((item, currentIndex) => currentIndex === index ? {
                           ...item,
