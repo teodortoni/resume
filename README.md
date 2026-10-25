@@ -19,7 +19,7 @@ A reusable, configuration-driven resume platform built with React, Vite, and Git
 
 ## Overview
 
-This project is a static resume and portfolio template designed for developers who want a polished personal site without a backend. Content is stored in JSON, the layout is theme-based, and the site can be deployed directly to GitHub Pages.
+This project is a static resume and portfolio template designed for developers who want a polished personal site without a backend. Content is stored in JSON, the layout is theme-based, and the site can be deployed directly to GitHub Pages
 
 ## Features
 
