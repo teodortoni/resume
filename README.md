@@ -7,13 +7,15 @@ A reusable, configuration-driven resume platform built with React, Vite, and Git
   ·
   <a href="https://github.com/teodortoni/resume">GitHub</a>
 </p>
-[![React](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=black)](https://react.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)](https://vite.dev/)
-[![Deploy](https://github.com/teodortoni/resume/actions/workflows/deploy.yml/badge.svg)](https://github.com/teodortoni/resume/actions/workflows/deploy.yml)
-[![License](https://img.shields.io/github/license/teodortoni/resume)](https://github.com/teodortoni/resume/blob/main/LICENSE)
-[![Stars](https://img.shields.io/github/stars/teodortoni/resume)](https://github.com/teodortoni/resume/stargazers)
-[![Forks](https://img.shields.io/github/forks/teodortoni/resume)](https://github.com/teodortoni/resume/network/members)
+<p align="center">
+  <a href="https://react.dev/"><img src="https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=black" alt="React" /></a>
+  <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white" alt="TypeScript" /></a>
+  <a href="https://vite.dev/"><img src="https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white" alt="Vite" /></a>
+  <a href="https://github.com/teodortoni/resume/actions/workflows/deploy.yml"><img src="https://github.com/teodortoni/resume/actions/workflows/deploy.yml/badge.svg" alt="Deploy status" /></a>
+  <a href="https://github.com/teodortoni/resume/blob/main/LICENSE"><img src="https://img.shields.io/github/license/teodortoni/resume" alt="License" /></a>
+  <a href="https://github.com/teodortoni/resume/stargazers"><img src="https://img.shields.io/github/stars/teodortoni/resume" alt="Stars" /></a>
+  <a href="https://github.com/teodortoni/resume/network/members"><img src="https://img.shields.io/github/forks/teodortoni/resume" alt="Forks" /></a>
+</p>
 
 ## Overview
 
