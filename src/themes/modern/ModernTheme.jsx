@@ -10,12 +10,14 @@ function ModernTheme({ resume, config, activeExperienceId, onSelectExperience, i
   const activeExperience =
     resume.experience.find((item) => item.id === activeExperienceId) ?? resume.experience[0];
 
-  const proofStats = [
+  const fallbackHighlights = [
     { value: `${resume.profile?.yearsOfExperience ?? 10}+`, label: "Years building" },
     { value: "Product", label: "Focus" },
     { value: "TypeScript", label: "Core stack" },
     { value: "Full-cycle", label: "Delivery" }
   ];
+  const profileHighlights = (resume.profile?.highlights?.length ? resume.profile.highlights : fallbackHighlights)
+    .filter((item) => item?.value || item?.label);
 
   return (
     <div className="app-shell theme-modern" data-variant={isDarkMode ? "dark" : "light"}>
@@ -23,18 +25,20 @@ function ModernTheme({ resume, config, activeExperienceId, onSelectExperience, i
       <main id="main-content" className="modern-main">
         {config.showProfile !== false && <HeroSection config={config} profile={resume.profile} />}
 
-        <section className="modern-proof-strip section" aria-label="Profile highlights">
-          <div className="container">
-            <div className="modern-proof-grid">
-              {proofStats.map(({ value, label }) => (
-                <div key={label} className="modern-proof-card">
-                  <div className="modern-proof-value">{value}</div>
-                  <div className="modern-proof-label">{label}</div>
-                </div>
-              ))}
+        {config.showHighlights !== false && profileHighlights.length > 0 && (
+          <section id="highlights" className="modern-proof-strip section" aria-label="Profile highlights">
+            <div className="container">
+              <div className="modern-proof-grid">
+                {profileHighlights.map(({ value, label }, index) => (
+                  <div key={`${label}-${index}`} className="modern-proof-card">
+                    <div className="modern-proof-value">{value}</div>
+                    <div className="modern-proof-label">{label}</div>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         {config.showExperience && (
           <ExperienceSection

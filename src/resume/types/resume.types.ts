@@ -8,6 +8,10 @@ export type Profile = {
   name: string;
   title: string;
   location?: string;
+  highlights?: Array<{
+    value: string;
+    label: string;
+  }>;
   authorization?: {
     authorizedToWorkInUS?: {
       enabled: boolean;
@@ -19,7 +23,9 @@ export type Profile = {
     };
   } | string;
   jobPreference?: string;
-  summary: string;
+  headline: string;
+  stack?: string;
+  supporting?: string;
   yearsOfExperience: number;
   education?: EducationItem;
   email?: string;

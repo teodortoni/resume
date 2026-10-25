@@ -206,8 +206,8 @@
 .theme-modern .light-action:hover,
 .theme-modern .light-action:focus-visible {
   transform: translateY(-1px);
-  border-color: rgba(239, 125, 99, 0.34);
-  background: rgba(239, 125, 99, 0.08);
+  border-color: rgba(239, 125, 99, 1);
+  background: rgba(239, 125, 99, 1);
   outline: none;
 }
 

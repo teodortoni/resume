@@ -52,7 +52,7 @@ const buildPersonJsonLd = (siteConfig, resumeData, siteUrl) => {
     "@type": "Person",
     name: profile.name,
     jobTitle: profile.title,
-    description: profile.summary,
+    description: profile.headline,
     email: profile.email,
     address: profile.location ? { "@type": "PostalAddress", addressLocality: profile.location } : undefined,
     knowsAbout: allSkillKeywords,
@@ -83,8 +83,10 @@ const buildNoscriptResume = (siteConfig, resumeData) => {
   const skills = toArray(resumeData.skills);
   const certifications = toArray(resumeData.certifications);
   const languages = toArray(profile.languages);
+  const highlights = toArray(profile.highlights);
   const visible = {
     profile: siteConfig.showProfile !== false,
+    highlights: siteConfig.showHighlights !== false,
     experience: siteConfig.showExperience !== false,
     projects: siteConfig.showProjects !== false,
     skills: siteConfig.showSkills !== false,
@@ -102,7 +104,7 @@ const buildNoscriptResume = (siteConfig, resumeData) => {
         <section aria-labelledby="noscript-profile">
           <h2 id="noscript-profile">Profile</h2>
           <p><strong>${escapeHtml(profile.name)}</strong> — ${escapeHtml(profile.title)}</p>
-          <p>${escapeHtml(profile.summary)}</p>
+          <p>${escapeHtml(profile.headline)}</p>
           ${profile.location ? `<p>Location: ${escapeHtml(profile.location)}</p>` : ""}
           ${profile.email ? `<p>Email: <a href="mailto:${escapeHtml(profile.email)}">${escapeHtml(profile.email)}</a></p>` : ""}
           ${socialItems.length ? `<p>${socialItems.join(" · ")}</p>` : ""}
@@ -141,6 +143,20 @@ const buildNoscriptResume = (siteConfig, resumeData) => {
               `;
             })
             .join("")}
+        </section>
+      `
+    : "";
+
+  const highlightsSection = visible.highlights && highlights.length
+    ? `
+        <section aria-labelledby="noscript-highlights">
+          <h2 id="noscript-highlights">Highlights</h2>
+          ${sectionList(highlights, (item) =>
+            [item.value, item.label]
+              .filter(Boolean)
+              .map((part) => escapeHtml(part))
+              .join(" — ")
+          )}
         </section>
       `
     : "";
@@ -228,6 +244,7 @@ const buildNoscriptResume = (siteConfig, resumeData) => {
     <main>
       <h1>${escapeHtml(profile.name || siteConfig.siteTitle || "Resume")}</h1>
       ${profileSection}
+      ${highlightsSection}
       ${experienceSection}
       ${projectsSection}
       ${skillsSection}
@@ -245,7 +262,7 @@ const buildSeoPayload = (siteConfig, resumeData, basePath) => {
   const title = profile.name && profile.title
     ? `${profile.name} — ${profile.title}`
     : siteConfig.siteTitle || "Resume";
-  const description = siteConfig.seoDescription || profile.summary || `${title} resume`;
+  const description = siteConfig.seoDescription || profile.headline || `${title} resume`;
   const keywords = uniq(
     toArray(resumeData.skills).flatMap((group) => toArray(group.items))
   ).join(", ");

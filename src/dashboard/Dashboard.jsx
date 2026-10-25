@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Award,
+  BarChart3,
   BookOpenText,
   BriefcaseBusiness,
   Clock3,
@@ -69,6 +70,27 @@ const defaultExpandedState = {
   skills: true,
   certifications: true
 };
+
+const PROFILE_SUBSECTIONS = [
+  { key: "basics", label: "Basics", icon: UserRound },
+  { key: "headline", label: "Headline", icon: FileText },
+  { key: "heroCopy", label: "Stack & Supporting", icon: Sparkles },
+  { key: "education", label: "Education", icon: GraduationCap },
+  { key: "highlights", label: "Highlights", icon: BarChart3 },
+  { key: "languages", label: "Languages", icon: Flag },
+  { key: "contact", label: "Contact & Social", icon: Mail }
+];
+
+const DASHBOARD_SECTIONS = [
+  { key: "siteSettings", label: "Site settings" },
+  { key: "profile", label: "Profile" },
+  { key: "experience", label: "Experience" },
+  { key: "projects", label: "Projects" },
+  { key: "skills", label: "Skills" },
+  { key: "certifications", label: "Certifications" }
+];
+
+const SECTIONS_WITH_SUBMENU = ["profile", "experience", "projects", "skills", "certifications"];
 
 const makeId = (prefix) => `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2, 8)}`;
 
@@ -188,7 +210,27 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
   const [resumeSavedAt, setResumeSavedAt] = useState("Not saved yet");
   const [expanded, setExpanded] = useState(defaultExpandedState);
   const [selectedSection, setSelectedSection] = useState("siteSettings");
+  const [selectedSubsection, setSelectedSubsection] = useState({
+    profile: "all",
+    experience: "all",
+    projects: "all",
+    skills: "all",
+    certifications: "all"
+  });
+  const [openSubmenus, setOpenSubmenus] = useState({
+    profile: false,
+    experience: false,
+    projects: false,
+    skills: false,
+    certifications: false
+  });
   const [draggedItem, setDraggedItem] = useState(null);
+
+  const openOnlySubmenu = (sectionKey) => {
+    setOpenSubmenus(() => Object.fromEntries(
+      SECTIONS_WITH_SUBMENU.map((key) => [key, key === sectionKey])
+    ));
+  };
 
   useEffect(() => {
     setSiteDraft(initialConfig);
@@ -197,6 +239,37 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
   useEffect(() => {
     setResumeDraft(resume);
   }, [resume]);
+
+  useEffect(() => {
+    setSelectedSubsection((current) => {
+      const normalizeItemSubkey = (subkey, length) => {
+        if (!subkey || subkey === "all") {
+          return "all";
+        }
+
+        if (!subkey.startsWith("item-")) {
+          return subkey;
+        }
+
+        const index = Number(subkey.replace("item-", ""));
+        if (!Number.isInteger(index) || index < 0 || index >= length) {
+          return "all";
+        }
+
+        return subkey;
+      };
+
+      const next = {
+        ...current,
+        experience: normalizeItemSubkey(current.experience, resumeDraft.experience?.length ?? 0),
+        projects: normalizeItemSubkey(current.projects, resumeDraft.projects?.length ?? 0),
+        skills: normalizeItemSubkey(current.skills, resumeDraft.skills?.length ?? 0),
+        certifications: normalizeItemSubkey(current.certifications, resumeDraft.certifications?.length ?? 0)
+      };
+
+      return JSON.stringify(next) === JSON.stringify(current) ? current : next;
+    });
+  }, [resumeDraft.experience, resumeDraft.projects, resumeDraft.skills, resumeDraft.certifications]);
 
   const normalizeAuthorization = (authorizationValue) => {
     const defaults = {
@@ -240,7 +313,7 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
   };
 
   const profileName = useMemo(() => resumeDraft?.profile?.name || "Your profile", [resumeDraft]);
-  const profileTitle = useMemo(() => resumeDraft?.profile?.title || "Professional summary", [resumeDraft]);
+  const profileTitle = useMemo(() => resumeDraft?.profile?.title || "Professional headline", [resumeDraft]);
   const authorizationFlags = useMemo(
     () => normalizeAuthorization(resumeDraft?.profile?.authorization),
     [resumeDraft]
@@ -248,8 +321,32 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
 
   const isSectionVisible = (sectionKey) => selectedSection === sectionKey;
 
-  const toggleSection = (sectionKey) => {
+  const selectPrimarySection = (sectionKey) => {
     setSelectedSection(sectionKey);
+    if (SECTIONS_WITH_SUBMENU.includes(sectionKey)) {
+      setSelectedSubsection((current) => ({
+        ...current,
+        [sectionKey]: "all"
+      }));
+      openOnlySubmenu(sectionKey);
+    } else {
+      setOpenSubmenus((current) => Object.fromEntries(
+        SECTIONS_WITH_SUBMENU.map((key) => [key, current[key] && key === sectionKey])
+      ));
+    }
+    setExpanded((current) => ({
+      ...current,
+      [sectionKey]: true
+    }));
+  };
+
+  const selectSubsection = (sectionKey, subsectionKey) => {
+    setSelectedSection(sectionKey);
+    setSelectedSubsection((current) => ({
+      ...current,
+      [sectionKey]: subsectionKey
+    }));
+    openOnlySubmenu(sectionKey);
     setExpanded((current) => ({
       ...current,
       [sectionKey]: true
@@ -499,6 +596,19 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
     }));
   };
 
+  const addProfileHighlight = () => {
+    setResumeDraft((current) => ({
+      ...current,
+      profile: {
+        ...(current.profile ?? {}),
+        highlights: [
+          ...(current.profile?.highlights ?? []),
+          { value: "New value", label: "New highlight" }
+        ]
+      }
+    }));
+  };
+
   const duplicateExperience = (index) => {
     setResumeDraft((current) => {
       const items = current.experience ?? [];
@@ -601,6 +711,28 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
     });
   };
 
+  const duplicateProfileHighlight = (index) => {
+    setResumeDraft((current) => {
+      const items = current.profile?.highlights ?? [];
+      if (!items[index]) {
+        return current;
+      }
+
+      const nextItem = cloneItem(items[index]);
+      return {
+        ...current,
+        profile: {
+          ...(current.profile ?? {}),
+          highlights: [
+            ...items.slice(0, index + 1),
+            nextItem,
+            ...items.slice(index + 1)
+          ]
+        }
+      };
+    });
+  };
+
   const reorderExperience = (fromIndex, toIndex) => {
     setResumeDraft((current) => ({
       ...current,
@@ -653,6 +785,16 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
     }));
   };
 
+  const removeProfileHighlight = (index) => {
+    setResumeDraft((current) => ({
+      ...current,
+      profile: {
+        ...(current.profile ?? {}),
+        highlights: (current.profile?.highlights ?? []).filter((_, itemIndex) => itemIndex !== index)
+      }
+    }));
+  };
+
   const updateLanguage = (index, updates) => {
     setResumeDraft((current) => ({
       ...current,
@@ -662,6 +804,18 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
           ...language,
           ...updates
         } : language)
+      }
+    }));
+  };
+
+  const updateProfileHighlight = (index, field, value) => {
+    setResumeDraft((current) => ({
+      ...current,
+      profile: {
+        ...(current.profile ?? {}),
+        highlights: (current.profile?.highlights ?? []).map((highlight, highlightIndex) => highlightIndex === index
+          ? { ...highlight, [field]: value }
+          : highlight)
       }
     }));
   };
@@ -748,6 +902,7 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
   const sectionIcons = {
     siteSettings: Settings2,
     profile: UserRound,
+    highlights: BarChart3,
     experience: BriefcaseBusiness,
     projects: FolderKanban,
     skills: Sparkles,
@@ -763,7 +918,75 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
     certifications: { kicker: "Credentials", title: "Certifications editor" }
   };
 
-  const activeHeading = sectionHeadings[selectedSection] ?? sectionHeadings.siteSettings;
+  const profileSubsectionHeadings = {
+    all: sectionHeadings.profile,
+    basics: { kicker: "Profile", title: "Basics editor" },
+    headline: { kicker: "Profile", title: "Headline editor" },
+    heroCopy: { kicker: "Profile", title: "Stack & supporting editor" },
+    education: { kicker: "Profile", title: "Education editor" },
+    highlights: { kicker: "Profile", title: "Highlights editor" },
+    languages: { kicker: "Profile", title: "Languages editor" },
+    contact: { kicker: "Profile", title: "Contact & social editor" }
+  };
+
+  const sectionSubmenus = useMemo(() => ({
+    profile: PROFILE_SUBSECTIONS,
+    experience: [
+      ...(resumeDraft.experience ?? []).map((item, index) => ({
+        key: `item-${index}`,
+        label: item.company?.trim() || `Role ${index + 1}`,
+        icon: BriefcaseBusiness
+      }))
+    ],
+    projects: [
+      ...(resumeDraft.projects ?? []).map((item, index) => ({
+        key: `item-${index}`,
+        label: item.title?.trim() || `Project ${index + 1}`,
+        icon: FolderKanban
+      }))
+    ],
+    skills: [
+      ...(resumeDraft.skills ?? []).map((item, index) => ({
+        key: `item-${index}`,
+        label: item.title?.trim() || `Group ${index + 1}`,
+        icon: Sparkles
+      }))
+    ],
+    certifications: [
+      ...(resumeDraft.certifications ?? []).map((item, index) => ({
+        key: `item-${index}`,
+        label: item.name?.trim() || `Credential ${index + 1}`,
+        icon: Award
+      }))
+    ]
+  }), [resumeDraft]);
+
+  const selectedSectionSubkey = selectedSubsection[selectedSection] ?? "all";
+  const selectedItemIndex = selectedSectionSubkey.startsWith("item-")
+    ? Number(selectedSectionSubkey.replace("item-", ""))
+    : null;
+
+  const activeHeading = (() => {
+    if (selectedSection === "profile") {
+      return profileSubsectionHeadings[selectedSectionSubkey] ?? profileSubsectionHeadings.all;
+    }
+
+    if (selectedItemIndex !== null && Number.isInteger(selectedItemIndex) && selectedItemIndex >= 0) {
+      const itemLabel = collectionItemLabelBySection[selectedSection] ?? "Item";
+      return {
+        kicker: sectionHeadings[selectedSection]?.kicker ?? "Section",
+        title: `${sectionHeadings[selectedSection]?.title ?? "Editor"} · ${itemLabel} ${selectedItemIndex + 1}`
+      };
+    }
+
+    return sectionHeadings[selectedSection] ?? sectionHeadings.siteSettings;
+  })();
+
+  const isProfileCardVisible = (cardKey) => selectedSectionSubkey === "all" || selectedSectionSubkey === cardKey;
+  const isCollectionCardVisible = (sectionKey, index) => {
+    const subkey = selectedSubsection[sectionKey] ?? "all";
+    return subkey === "all" || subkey === `item-${index}`;
+  };
   const visibilityToggles = useMemo(
     () =>
       Object.keys(siteDraft ?? {})
@@ -867,29 +1090,57 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
         </div>
 
         <nav className="dashboard-nav" aria-label="Dashboard sections">
-          {[
-            { key: "siteSettings", label: "Site settings" },
-            { key: "profile", label: "Profile" },
-            { key: "experience", label: "Experience" },
-            { key: "projects", label: "Projects" },
-            { key: "skills", label: "Skills" },
-            { key: "certifications", label: "Certifications" }
-          ].map((item) => {
+          {DASHBOARD_SECTIONS.map((item) => {
             const Icon = sectionIcons[item.key] ?? Settings2;
+            const isActive = selectedSection === item.key;
+            const hasSubmenu = SECTIONS_WITH_SUBMENU.includes(item.key);
+            const isExpanded = hasSubmenu && openSubmenus[item.key];
+            const submenuItems = sectionSubmenus[item.key] ?? [];
 
             return (
-              <button
-                key={item.key}
-                type="button"
-                className={selectedSection === item.key ? "dashboard-nav-item is-active" : "dashboard-nav-item"}
-                onClick={() => setSelectedSection(item.key)}
-              >
-                <span className="dashboard-nav-item-main">
-                  <Icon size={14} aria-hidden="true" />
-                  <span>{item.label}</span>
-                </span>
-                <ChevronRight size={13} className="dashboard-nav-arrow" aria-hidden="true" />
-              </button>
+              <div key={item.key} className="dashboard-nav-group">
+                <button
+                  type="button"
+                  className={isActive ? "dashboard-nav-item is-active" : "dashboard-nav-item"}
+                  onClick={() => selectPrimarySection(item.key)}
+                >
+                  <span className="dashboard-nav-item-main">
+                    <Icon size={14} aria-hidden="true" />
+                    <span>{item.label}</span>
+                  </span>
+                  {hasSubmenu && (
+                    <ChevronRight
+                      size={13}
+                      className={isExpanded ? "dashboard-nav-arrow is-open" : "dashboard-nav-arrow"}
+                      aria-hidden="true"
+                    />
+                  )}
+                </button>
+
+                {isExpanded && (
+                  <div className="dashboard-nav-submenu" aria-label={`${item.label} subsections`}>
+                    {submenuItems.map((subsection) => {
+                      const SubIcon = subsection.icon;
+                      const isSubsectionActive =
+                        selectedSection === item.key && (selectedSubsection[item.key] ?? "all") === subsection.key;
+
+                      return (
+                        <button
+                          key={subsection.key}
+                          type="button"
+                          className={isSubsectionActive ? "dashboard-nav-subitem is-active" : "dashboard-nav-subitem"}
+                          onClick={() => selectSubsection(item.key, subsection.key)}
+                        >
+                          <span className="dashboard-nav-item-main">
+                            <SubIcon size={12} aria-hidden="true" />
+                            <span>{subsection.label}</span>
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
             );
           })}
         </nav>
@@ -980,7 +1231,8 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
           {expanded.profile && (
             <div className="dashboard-section-body">
               <div className="dashboard-profile-cards">
-                <section className="dashboard-profile-card profile-card-basics">
+                {isProfileCardVisible("basics") && (
+                <section className="dashboard-profile-card dashboard-profile-card-animated profile-card-basics">
                   <h3 className="dashboard-subcard-title">Basics</h3>
                   <div className="dashboard-grid">
                     <label className="dashboard-field-inline">
@@ -1066,24 +1318,56 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
                     </label>
                   </div>
                 </section>
+                )}
 
-                <section className="dashboard-profile-card profile-card-summary">
-                  <h3 className="dashboard-subcard-title">Summary</h3>
+                {isProfileCardVisible("headline") && (
+                <section className="dashboard-profile-card dashboard-profile-card-animated profile-card-summary">
+                  <h3 className="dashboard-subcard-title">Headline</h3>
                   <div className="dashboard-grid">
                     <label className="full-width dashboard-field-inline dashboard-field-inline-textarea">
                       <span className="dashboard-field-icon" aria-hidden="true"><FileText size={14} /></span>
                       <textarea
-                        aria-label="Summary"
-                        placeholder="Summary"
+                        aria-label="Headline"
+                        placeholder="Headline"
                         rows="4"
-                        value={resumeDraft.profile?.summary ?? ""}
-                        onChange={(event) => updateProfileField("summary", event.target.value)}
+                        value={resumeDraft.profile?.headline ?? ""}
+                        onChange={(event) => updateProfileField("headline", event.target.value)}
                       />
                     </label>
                   </div>
                 </section>
+                )}
 
-                <section className="dashboard-profile-card profile-card-education">
+                {isProfileCardVisible("heroCopy") && (
+                <section className="dashboard-profile-card dashboard-profile-card-animated profile-card-hero-copy">
+                  <h3 className="dashboard-subcard-title">Stack & supporting</h3>
+                  <div className="dashboard-grid">
+                    <label className="full-width dashboard-field-inline">
+                      <span className="dashboard-field-icon" aria-hidden="true"><Sparkles size={14} /></span>
+                      <input
+                        aria-label="Stack"
+                        placeholder="Stack"
+                        value={resumeDraft.profile?.stack ?? ""}
+                        onChange={(event) => updateProfileField("stack", event.target.value)}
+                      />
+                    </label>
+
+                    <label className="full-width dashboard-field-inline dashboard-field-inline-textarea">
+                      <span className="dashboard-field-icon" aria-hidden="true"><FileText size={14} /></span>
+                      <textarea
+                        aria-label="Supporting"
+                        placeholder="Supporting"
+                        rows="4"
+                        value={resumeDraft.profile?.supporting ?? ""}
+                        onChange={(event) => updateProfileField("supporting", event.target.value)}
+                      />
+                    </label>
+                  </div>
+                </section>
+                )}
+
+                {isProfileCardVisible("education") && (
+                <section className="dashboard-profile-card dashboard-profile-card-animated profile-card-education">
                   <h3 className="dashboard-subcard-title">Education</h3>
                   <div className="dashboard-grid">
                     <label className="dashboard-field-inline">
@@ -1117,8 +1401,76 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
                     </label>
                   </div>
                 </section>
+                )}
 
-                <section className="dashboard-profile-card profile-card-languages">
+                {isProfileCardVisible("highlights") && (
+                <section className="dashboard-profile-card dashboard-profile-card-animated profile-card-highlights">
+                  <div className="dashboard-item-toolbar">
+                    <h3 className="dashboard-subcard-title">Highlights</h3>
+                    <div className="dashboard-item-actions">
+                      <button
+                        type="button"
+                        className="dashboard-icon-button dashboard-icon-button-compact"
+                        onClick={() => duplicateProfileHighlight((resumeDraft.profile?.highlights ?? []).length - 1)}
+                        title="Duplicate highlight"
+                        aria-label="Duplicate highlight"
+                      >
+                        <Copy size={13} aria-hidden="true" />
+                      </button>
+                      <button
+                        type="button"
+                        className="dashboard-icon-button dashboard-icon-button-compact"
+                        onClick={addProfileHighlight}
+                        title="Add highlight"
+                        aria-label="Add highlight"
+                      >
+                        <Plus size={13} aria-hidden="true" />
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="dashboard-highlight-editor">
+                    {(resumeDraft.profile?.highlights ?? []).map((highlight, index) => (
+                      <div key={`highlight-${index}`} className="dashboard-grid dashboard-highlight-row">
+                        <label className="dashboard-field-inline">
+                          <span className="dashboard-field-icon" aria-hidden="true"><BarChart3 size={14} /></span>
+                          <input
+                            aria-label="Highlight value"
+                            placeholder="Value"
+                            value={highlight.value ?? ""}
+                            onChange={(event) => updateProfileHighlight(index, "value", event.target.value)}
+                          />
+                        </label>
+
+                        <label className="dashboard-field-inline">
+                          <span className="dashboard-field-icon" aria-hidden="true"><FileText size={14} /></span>
+                          <input
+                            aria-label="Highlight label"
+                            placeholder="Label"
+                            value={highlight.label ?? ""}
+                            onChange={(event) => updateProfileHighlight(index, "label", event.target.value)}
+                          />
+                        </label>
+
+                        <div className="dashboard-highlight-row-actions">
+                          <button
+                            type="button"
+                            className="dashboard-icon-button dashboard-icon-button-compact dashboard-remove-icon-button"
+                            onClick={() => removeProfileHighlight(index)}
+                            title="Remove highlight"
+                            aria-label="Remove highlight"
+                          >
+                            <Trash2 size={13} aria-hidden="true" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+                )}
+
+                {isProfileCardVisible("languages") && (
+                <section className="dashboard-profile-card dashboard-profile-card-animated profile-card-languages">
                   <div className="dashboard-item-toolbar">
                     <h3 className="dashboard-subcard-title">Languages</h3>
                     <div className="dashboard-item-actions">
@@ -1197,8 +1549,10 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
                     ))}
                   </div>
                 </section>
+                )}
 
-                <section className="dashboard-profile-card profile-card-contact">
+                {isProfileCardVisible("contact") && (
+                <section className="dashboard-profile-card dashboard-profile-card-animated profile-card-contact">
                   <h3 className="dashboard-subcard-title">Contact & social</h3>
                   <div className="dashboard-grid">
                     <label className="dashboard-field-inline">
@@ -1232,6 +1586,7 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
                     </label>
                   </div>
                 </section>
+                )}
               </div>
             </div>
           )}
@@ -1253,9 +1608,10 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
           {expanded.experience && (
             <div className="dashboard-section-body">
               {(resumeDraft.experience ?? []).map((item, index) => (
+                isCollectionCardVisible("experience", index) ? (
                 <div
                   key={item.id || `experience-${index}`}
-                  className="dashboard-collection-item"
+                  className="dashboard-collection-item dashboard-collection-item-animated"
                   draggable
                   onDragStart={() => setDraggedItem({ section: "experience", index })}
                   onDragOver={(event) => event.preventDefault()}
@@ -1318,6 +1674,7 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
                     </label>
                   </div>
                 </div>
+                ) : null
               ))}
             </div>
           )}
@@ -1339,9 +1696,10 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
           {expanded.projects && (
             <div className="dashboard-section-body">
               {(resumeDraft.projects ?? []).map((project, index) => (
+                isCollectionCardVisible("projects", index) ? (
                 <div
                   key={project.id || `project-${index}`}
-                  className="dashboard-collection-item"
+                  className="dashboard-collection-item dashboard-collection-item-animated"
                   draggable
                   onDragStart={() => setDraggedItem({ section: "projects", index })}
                   onDragOver={(event) => event.preventDefault()}
@@ -1444,6 +1802,7 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
                     </label>
                   </div>
                 </div>
+                ) : null
               ))}
             </div>
           )}
@@ -1465,7 +1824,8 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
           {expanded.skills && (
             <div className="dashboard-section-body">
               {(resumeDraft.skills ?? []).map((group, groupIndex) => (
-                <div key={`${group.title}-${groupIndex}`} className="dashboard-collection-item">
+                isCollectionCardVisible("skills", groupIndex) ? (
+                <div key={`${group.title}-${groupIndex}`} className="dashboard-collection-item dashboard-collection-item-animated">
                   <div className="dashboard-item-toolbar">
                     <span>Group {groupIndex + 1}</span>
                     <div className="dashboard-item-actions">
@@ -1535,6 +1895,7 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
                     </label>
                   </div>
                 </div>
+                ) : null
               ))}
             </div>
           )}
@@ -1556,7 +1917,8 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
           {expanded.certifications && (
             <div className="dashboard-section-body">
               {(resumeDraft.certifications ?? []).map((certification, index) => (
-                <div key={`${certification.name}-${index}`} className="dashboard-collection-item">
+                isCollectionCardVisible("certifications", index) ? (
+                <div key={`${certification.name}-${index}`} className="dashboard-collection-item dashboard-collection-item-animated">
                   <div className="dashboard-item-toolbar">
                     <span>Credential {index + 1}</span>
                     <div className="dashboard-item-actions">
@@ -1613,6 +1975,7 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
                     </label>
                   </div>
                 </div>
+                ) : null
               ))}
             </div>
           )}
@@ -1625,3 +1988,9 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
 }
 
 export default Dashboard;
+  const collectionItemLabelBySection = {
+    experience: "Role",
+    projects: "Project",
+    skills: "Group",
+    certifications: "Credential"
+  };

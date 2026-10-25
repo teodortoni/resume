@@ -3,6 +3,24 @@
     "name": "Teodor Toni",
     "title": "Senior Full-Stack Software Engineer",
     "location": "Venice, FL",
+    "highlights": [
+      {
+        "value": "15+",
+        "label": "Years of Experience"
+      },
+      {
+        "value": "35%+",
+        "label": "API Latency Reduction"
+      },
+      {
+        "value": "4",
+        "label": "Projects Led"
+      },
+      {
+        "value": "5",
+        "label": "Engineers Mentored"
+      }
+    ],
     "authorization": {
       "authorizedToWorkInUS": {
         "enabled": true,
@@ -14,7 +32,9 @@
       }
     },
     "jobPreference": "Remote US",
-    "summary": "Building reliable backend systems, APIs, and production web applications.",
+    "headline": "Building reliable backend systems, APIs, and production web applications.",
+    "stack": "TypeScript · React · Node.js · AWS · AI|ML",
+    "supporting": "Senior Full-Stack Software Engineer with 15 years of experience building and scaling production software, with a strong focus on backend engineering, APIs, AWS, and end-to-end product delivery.",
     "yearsOfExperience": 15,
     "education": {
       "major": "Computer Information Systems",

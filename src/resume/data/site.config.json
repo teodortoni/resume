@@ -4,6 +4,7 @@
   "seoDescription": "Teodor Toni is a Senior Full-Stack Software Engineer focused on backend systems, APIs, AWS, and production web applications.",
   "theme": "modern",
   "showProfile": true,
+  "showHighlights": true,
   "showExperience": true,
   "showProjects": true,
   "showSkills": true,
