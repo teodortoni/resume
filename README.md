@@ -1,6 +1,8 @@
-# Resume
+# Developer Resume Website Template
 
-A reusable, configuration-driven resume platform built with React, Vite, and GitHub Pages.
+A free, customizable developer resume website built with React and TypeScript. Create a professional online resume and portfolio, showcase your skills and experience, and deploy your website to GitHub Pages.
+
+Designed for developers and job seekers who want a modern personal website without paying for hosting or maintaining a backend.
 
 <p align="center">
   <a href="https://teodortoni.github.io/resume/">Live demo</a>
@@ -17,9 +19,13 @@ A reusable, configuration-driven resume platform built with React, Vite, and Git
   <a href="https://github.com/teodortoni/resume/network/members"><img src="https://img.shields.io/github/forks/teodortoni/resume" alt="Forks" /></a>
 </p>
 
-## Overview
+## Why Use This Project?
 
-This project is a static resume and portfolio template designed for developers who want a polished personal site without a backend. Content is stored in JSON, the layout is theme-based, and the site can be deployed directly to GitHub Pages
+- Free and open source: Build your own professional resume website.
+- Customizable: Personalize your resume content and appearance.
+- Modern technology: Built with React, TypeScript, and Vite.
+- Static deployment: Publish your site using GitHub Pages.
+- Developer-focused: Showcase your experience, skills, projects, and achievements in one place.
 
 ## Features
 
