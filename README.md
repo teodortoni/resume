@@ -7,6 +7,13 @@ A reusable, configuration-driven resume platform built with React, Vite, and Git
   ·
   <a href="https://github.com/teodortoni/resume">GitHub</a>
 </p>
+[![React](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=black)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)](https://vite.dev/)
+[![Deploy](https://github.com/teodortoni/resume/actions/workflows/deploy.yml/badge.svg)](https://github.com/teodortoni/resume/actions/workflows/deploy.yml)
+[![License](https://img.shields.io/github/license/teodortoni/resume)](https://github.com/teodortoni/resume/blob/main/LICENSE)
+[![Stars](https://img.shields.io/github/stars/teodortoni/resume)](https://github.com/teodortoni/resume/stargazers)
+[![Forks](https://img.shields.io/github/forks/teodortoni/resume)](https://github.com/teodortoni/resume/network/members)
 
 ## Overview
 
