@@ -1,5 +1,7 @@
 {
   "siteTitle": "Teodor Toni",
+  "siteUrl": "https://teodortoni.github.io/resume/",
+  "seoDescription": "Teodor Toni is a Senior Full-Stack Software Engineer focused on backend systems, APIs, AWS, and production web applications.",
   "theme": "modern",
   "showProfile": true,
   "showExperience": true,

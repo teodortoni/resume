@@ -3,11 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Teodor Toni — Senior Full-Stack Engineer</title>
-    <meta
-      name="description"
-      content="Teodor Toni is a Senior Full-Stack Engineer focused on backend systems, APIs, AWS, and production web applications."
-    />
+    <title><%= SEO_TITLE %></title>
+    <meta name="description" content="<%= SEO_DESCRIPTION %>" />
+    <meta name="keywords" content="<%= SEO_KEYWORDS %>" />
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="<%= SEO_TITLE %>" />
+    <meta property="og:description" content="<%= SEO_DESCRIPTION %>" />
+    <meta property="og:url" content="<%= SEO_URL %>" />
+    <meta property="og:site_name" content="<%= SEO_SITE_TITLE %>" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="<%= SEO_TITLE %>" />
+    <meta name="twitter:description" content="<%= SEO_DESCRIPTION %>" />
+    <link rel="canonical" href="<%= SEO_URL %>" />
+    <script type="application/ld+json"><%- PERSON_JSON_LD %></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -16,6 +25,9 @@
     />
   </head>
   <body>
+    <noscript>
+      <%- NOSCRIPT_RESUME_HTML %>
+    </noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

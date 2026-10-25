@@ -27,6 +27,9 @@ This project is a static resume and portfolio template designed for developers w
 - Dashboard for editing profile, experience, skills, and projects
 - `default` and `modern` theme variants
 - Responsive resume layout
+- Build-time SEO injection into static HTML
+- JSON-LD `schema.org/Person` metadata
+- `<noscript>` semantic CV content for crawlers and non-JS visitors
 - Static deployment to GitHub Pages
 - Print-friendly styling
 - No database or backend required
@@ -120,6 +123,16 @@ GitHub Pages configuration in the app is set with:
 
 - `package.json` → `"homepage": "https://teodortoni.github.io/resume/"`
 - `vite.config.js` → `base: "/resume/"`
+
+## SEO and ATS support
+
+SEO/ATS metadata is generated at build time from your JSON config and injected into the static HTML:
+
+- `title`, `description`, canonical, Open Graph, and Twitter meta tags
+- JSON-LD `Person` structured data in `<head>`
+- Full semantic resume content inside `<noscript>`
+
+This allows crawlers to read your resume content even when JavaScript is not executed.
 
 ## Project structure
 
