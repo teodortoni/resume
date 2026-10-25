@@ -47,6 +47,13 @@
         "nativeName": "Ελληνικά",
         "direction": "ltr",
         "proficiency": "Fluent"
+      },
+      {
+        "code": "es",
+        "name": "Spanish",
+        "nativeName": "Español",
+        "direction": "ltr",
+        "proficiency": "Basic"
       }
     ]
   },

@@ -1,22 +1,26 @@
-# Open Source Resume Platform
+# Resume
 
-> Build a professional developer resume and portfolio with React and TypeScript — then deploy it for free to GitHub Pages.
+A reusable, configuration-driven resume platform built with React, Vite, and GitHub Pages.
 
-A clean, open-source, configuration-driven developer resume website and portfolio template designed for a modern developer profile. The project keeps content separate from presentation so you can edit a JSON resume, switch themes, build the static app, and ship it to GitHub Pages without a backend or database.
+<p align="center">
+  <a href="https://teodortoni.github.io/resume/">Live demo</a>
+  ·
+  <a href="https://github.com/teodortoni/resume">GitHub</a>
+</p>
+
+## Overview
+
+This project is a static resume and portfolio template designed for developers who want a polished personal site without a backend. Content is stored in JSON, the layout is theme-based, and the site can be deployed directly to GitHub Pages.
 
 ## Features
 
-- React + TypeScript-ready architecture
 - JSON-driven resume content
-- Multiple free themes
-- Local dashboard preview
-- Responsive design
-- SEO-ready metadata
-- Accessible UI patterns
-- Print/PDF support
-- GitHub Pages deployment
-- No backend required
-- No database required
+- Dashboard for editing profile, experience, skills, and projects
+- `default` and `modern` theme variants
+- Responsive resume layout
+- Static deployment to GitHub Pages
+- Print-friendly styling
+- No database or backend required
 
 ## Quick start
 
@@ -27,85 +31,121 @@ npm install
 npm run dev
 ```
 
-## Customize your resume
+Open:
 
-Edit the source content in:
+- `http://localhost:5173/`
+- `http://localhost:5173/dashboard`
+
+## How it works
+
+### Resume content
+
+The main content lives in:
 
 - `src/resume/data/resume.json`
+
+This file contains the profile, experience, projects, skills, languages, and optional certifications.
+
+### Site configuration
+
+Site-level configuration lives in:
+
 - `src/resume/data/site.config.json`
 
-The public resume loads this data and renders the selected theme automatically.
+This controls:
 
-## Themes
+- `siteTitle`
+- `theme`
+- section visibility (`showProfile`, `showExperience`, etc.)
+- optional resume asset path
 
-Themes live in:
+### Theme system
 
-- `src/themes/`
+Themes are registered in:
 
-The default registry supports:
+- `src/themes/registry.js`
+
+Available themes:
 
 - `default`
 - `modern`
 
-To select a theme, change the `theme` value in `src/resume/data/site.config.json`.
+### Dashboard
 
-## Build
+The dashboard is the editing surface for local updates. It reads and writes the JSON files so changes can be made without a backend. This makes the app easy to maintain as a lightweight static portfolio.
 
-```bash
-npm run build
+## Customize your resume
+
+Update the project files below to fit your own profile:
+
+```text
+src/resume/data/resume.json
+src/resume/data/site.config.json
 ```
 
-## Deploy to GitHub Pages
+Typical edits include:
 
-This project includes a GitHub Actions workflow in:
+- your name, title, location, email, and social links
+- work experience and project details
+- skills groups and certifications
+- visibility of each section of the resume
+- theme selection
+
+## Deployment
+
+This project is configured for GitHub Pages.
+
+```text
+clone → update content → run locally → commit → push to main → GitHub Actions builds → Pages deploys
+```
+
+Workflow file:
 
 - `.github/workflows/deploy.yml`
 
-It builds the application and deploys the generated `dist/` directory to GitHub Pages.
+The project is published under:
 
-## Architecture
+- https://teodortoni.github.io/resume/
+
+GitHub Pages configuration in the app is set with:
+
+- `package.json` → `"homepage": "https://teodortoni.github.io/resume/"`
+- `vite.config.js` → `base: "/resume/"`
+
+## Project structure
 
 ```text
-Resume JSON
-     ↓
-TypeScript Models
-     ↓
-Theme Registry
-     ↓
-React
-     ↓
-Vite
-     ↓
-Static dist/
-     ↓
-GitHub Pages
+resume/
+├── .github/workflows/deploy.yml
+├── src/
+│   ├── App.jsx
+│   ├── components/
+│   ├── dashboard/
+│   ├── resume/
+│   │   ├── data/
+│   │   └── types/
+│   ├── styles/
+│   └── themes/
+├── package.json
+├── vite.config.js
+├── README.md
+└── dist/
 ```
 
 ## Roadmap
 
-### V1
+Current V1 scope:
 
-- JSON-driven content
-- Theme system
-- Local dashboard
-- Responsive static portfolio
+- JSON-driven resume content
+- theme switching
+- local dashboard editing
+- responsive static portfolio
 - GitHub Pages deployment
-
-### V2
-
-- Premium themes
-- Advanced editing workflows
-- Optional hosted version
 
 ## Contributing
 
-Contributions are welcome. Fork the repository, create a theme, improve the component structure, or open a pull request with a small, well-scoped improvement.
+Contributions are welcome. Keep changes focused and aligned with the project’s static, configuration-driven structure.
 
 ## License
 
-This project is available under the existing repository license. If you are forking it for a new project, choose a permissive open-source license that fits your goals.
-
-## Why this project matters
-
-This is an open source resume builder, developer resume website, developer portfolio template, and GitHub Pages portfolio solution built for the static web. It is a customizable resume that works as a React resume, TypeScript resume, and a GitHub portfolio without a database or custom backend.
-Teodor Toni's resume
+This project is licensed under the [MIT License](./LICENSE).
