@@ -5,6 +5,6 @@
   "showExperience": true,
   "showProjects": true,
   "showSkills": true,
-  "showCertifications": true,
+  "showCertifications": false,
   "resumePath": "/resume/assets/resume.pdf"
 }
