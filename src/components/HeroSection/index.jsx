@@ -1,4 +1,5 @@
 
+import { useState } from "react";
 import {
   BadgeCheck,
   BriefcaseBusiness,
@@ -6,7 +7,8 @@ import {
   GitBranch,
   GraduationCap,
   MapPin,
-  ShieldCheck
+  ShieldCheck,
+  SquareUserRound
 } from "lucide-react";
 
 function HeroSection({ config, profile }) {
@@ -47,6 +49,8 @@ function HeroSection({ config, profile }) {
     authorization && { icon: <ShieldCheck size={16} aria-hidden="true" />, text: authorization },
     languages && { icon: <BadgeCheck size={16} aria-hidden="true" />, text: `Languages: ${languages}` }
   ].filter(Boolean);
+  const portraitSrc = profile?.portrait || "/resume/assets/portrait.jpg";
+  const [portraitError, setPortraitError] = useState(false);
 
   return (
     <section id="home" className="hero section">
@@ -88,12 +92,19 @@ function HeroSection({ config, profile }) {
         <div className="hero-art" aria-label="Portrait image">
           <div className="portrait-card">
             <div className="portrait-glow" />
-            <img
-              className="portrait-image"
-              src="/resume/assets/portrait.jpg"
-              alt="Portrait"
-              loading="eager"
-            />
+            {portraitError ? (
+              <div className="portrait-fallback" aria-label="Profile portrait placeholder">
+                <SquareUserRound size={96} aria-hidden="true" />
+              </div>
+            ) : (
+              <img
+                className="portrait-image"
+                src={portraitSrc}
+                alt="Portrait"
+                loading="eager"
+                onError={() => setPortraitError(true)}
+              />
+            )}
           </div>
         </div>
       </div>

@@ -122,10 +122,28 @@
   overflow: hidden;
 }
 
-.dashboard-portrait-frame img {
+.dashboard-portrait-frame img,
+.dashboard-portrait-fallback {
   width: 100%;
   height: 100%;
+  display: block;
+}
+
+.dashboard-portrait-frame img {
   object-fit: cover;
+}
+
+.dashboard-portrait-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, rgba(137, 197, 247, 0.2), rgba(13, 49, 76, 0.45));
+  color: rgba(237, 247, 255, 0.8);
+}
+
+.dashboard-portrait-fallback svg {
+  width: 3.6rem;
+  height: 3.6rem;
 }
 
 .dashboard-nav {

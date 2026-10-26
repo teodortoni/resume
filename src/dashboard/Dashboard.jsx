@@ -22,6 +22,7 @@ import {
   Settings2,
   ShieldCheck,
   Sparkles,
+  SquareUserRound,
   Trash2,
   UserRound,
   Waypoints
@@ -225,6 +226,7 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
     certifications: false
   });
   const [draggedItem, setDraggedItem] = useState(null);
+  const [portraitError, setPortraitError] = useState(false);
 
   const openOnlySubmenu = (sectionKey) => {
     setOpenSubmenus(() => Object.fromEntries(
@@ -314,6 +316,7 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
 
   const profileName = useMemo(() => resumeDraft?.profile?.name || "Your profile", [resumeDraft]);
   const profileTitle = useMemo(() => resumeDraft?.profile?.title || "Professional headline", [resumeDraft]);
+  const portraitSrc = resumeDraft?.profile?.portrait || "/resume/assets/portrait.jpg";
   const authorizationFlags = useMemo(
     () => normalizeAuthorization(resumeDraft?.profile?.authorization),
     [resumeDraft]
@@ -1082,7 +1085,17 @@ function Dashboard({ initialConfig, onSave, resume, onSaveResume }) {
         <div className="dashboard-brand-block">
           <div className="dashboard-portrait-shell" aria-hidden="true">
             <div className="dashboard-portrait-frame">
-              <img src="/resume/assets/portrait.jpg" alt="" />
+              {portraitError ? (
+                <div className="dashboard-portrait-fallback" aria-label="Profile portrait placeholder">
+                  <SquareUserRound size={46} aria-hidden="true" />
+                </div>
+              ) : (
+                <img
+                  src={portraitSrc}
+                  alt=""
+                  onError={() => setPortraitError(true)}
+                />
+              )}
             </div>
           </div>
           <h1 className="dashboard-profile-name">{profileName}</h1>

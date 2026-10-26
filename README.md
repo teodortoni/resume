@@ -19,6 +19,106 @@ Designed for developers and job seekers who want a modern personal website witho
   <a href="https://github.com/teodortoni/resume/network/members"><img src="https://img.shields.io/github/forks/teodortoni/resume" alt="Forks" /></a>
 </p>
 
+
+<h2>🎨 Resume Themes</h2>
+
+<p>Choose from two responsive themes, each supporting light and dark mode.</p>
+
+<table border="0" cellpadding="24" cellspacing="0" width="100%">
+  <tr>
+    <td align="center" width="50%">
+      <p><strong>Default Theme · Light</strong></p>
+      <img
+        src="public/assets/default-theme-light-mode.gif"
+        alt="Default resume theme in light mode"
+        width="400"
+      />
+    </td>
+    <td align="center" width="50%">
+      <p><strong>Modern Theme · Light</strong></p>
+      <img
+        src="public/assets/modern-theme-light-mode.gif"
+        alt="Modern resume theme in light mode"
+        width="400"
+      />
+    </td>
+  </tr>
+</table>
+
+<details>
+  <summary><strong>🌙 Explore dark mode themes</strong></summary>
+
+  <br />
+
+  <table border="0" cellpadding="24" cellspacing="0" width="100%">
+    <tr>
+      <td align="center" width="50%">
+        <p><strong>Default Theme · Dark</strong></p>
+        <img
+          src="public/assets/default-theme-dark-mode.gif"
+          alt="Default resume theme in dark mode"
+          width="400"
+        />
+      </td>
+      <td align="center" width="50%">
+        <p><strong>Modern Theme · Dark</strong></p>
+        <img
+          src="public/assets/modern-theme-dark-mode.gif"
+          alt="Modern resume theme in dark mode"
+          width="400"
+        />
+      </td>
+    </tr>
+  </table>
+</details>
+
+<h2>⚙️ Local Dashboard</h2>
+
+<p>
+  Customize your resume content locally without a backend or database.
+</p>
+
+<details>
+  <summary><strong>👤 Profile & Highlights Editor</strong></summary>
+
+  <br />
+
+  <table border="0" cellpadding="24" cellspacing="0" width="100%">
+    <tr>
+      <td align="center">
+        <p><strong>Profile & Highlights</strong></p>
+        <img
+          src="public/assets/dashboard-profile-highlights.gif"
+          alt="Dashboard profile and highlights editors"
+          width="800"
+        />
+      </td>
+    </tr>
+  </table>
+</details>
+
+<br />
+
+<details>
+  <summary><strong>💼 Experience Editor</strong></summary>
+
+  <br />
+
+  <table border="0" cellpadding="24" cellspacing="0" width="100%">
+    <tr>
+      <td align="center">
+        <p><strong>Work Experience</strong></p>
+        <img
+          src="public/assets/dashboard-experience.gif"
+          alt="Dashboard experience editor"
+          width="800"
+        />
+      </td>
+    </tr>
+  </table>
+</details>
+
+
 ## Why Use This Project?
 
 - Free and open source: Build your own professional resume website.

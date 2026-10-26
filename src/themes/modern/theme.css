@@ -518,6 +518,31 @@
   box-shadow: inset 0 0 0 1px rgba(31, 27, 26, 0.06);
 }
 
+.theme-modern .portrait-fallback {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 24rem;
+  border-radius: 1.6rem;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.72), rgba(255, 244, 240, 0.92));
+  border: 1px solid rgba(239, 125, 99, 0.15);
+  color: rgba(88, 61, 53, 0.7);
+}
+
+.theme-modern[data-variant="dark"] .portrait-fallback {
+  background: linear-gradient(160deg, rgba(39, 32, 30, 0.98), rgba(29, 25, 24, 0.94));
+  border-color: rgba(255, 140, 119, 0.18);
+  color: rgba(251, 206, 193, 0.74);
+}
+
+.theme-modern .portrait-fallback svg {
+  width: 5.2rem;
+  height: 5.2rem;
+}
+
 .theme-modern .section,
 .theme-modern .contact-section {
   padding-top: 4.8rem;
