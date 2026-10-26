@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+templates:
+  - name: Bug report
+    description: Report a bug or reproducible issue
+    file: bug_report.md
+  - name: Feature request
+    description: Suggest an improvement or new capability
+    file: feature_request.md

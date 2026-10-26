@@ -154,6 +154,53 @@ Open:
 - `http://localhost:5173/`
 - `http://localhost:5173/dashboard`
 
+## Accessibility and support
+
+This project is designed to be a respectful, usable, and inclusive developer portfolio template. We aim to keep content semantic, readable, and navigable across modern browsers and common assistive technologies.
+
+### Accessibility commitment
+
+We try to prioritize:
+
+- semantic HTML structure and sensible heading order
+- visible focus treatment for links and interactive controls
+- legible color contrast in both light and dark themes
+- descriptive labels for form and navigation elements
+- reduced-motion-friendly interactions where practical
+
+### Supported environments
+
+The project is tested and intended for modern evergreen browsers, including current versions of:
+
+- Chrome
+- Edge
+- Firefox
+- Safari
+
+It is designed for static hosting and responsive browser use on desktop and mobile devices. The project is not intended to support legacy browsers or deprecated, end-of-life browser stacks.
+
+### Known limitations
+
+This project is intentionally static and lightweight, so there are trade-offs:
+
+- the dashboard is a local editor, not a hosted CMS or backend-backed admin panel
+- advanced custom interactions are kept simple to remain compatible with static deployment
+- some highly customized editor workflows may still require mouse navigation or keyboard refinement in specific browser contexts
+- some theme styling and layout details are tuned for modern browsers rather than older legacy environments
+
+### Reporting barriers
+
+If you experience an accessibility issue, usability barrier, or other problem while using the site or dashboard, please open a GitHub issue using the appropriate template and include:
+
+- browser and version
+- device and operating system
+- assistive technology used, if any
+- steps to reproduce
+- expected vs. actual behavior
+- the impact on your ability to use the project
+
+This helps us identify barriers early and improve the experience for everyone.
+
 ## How it works
 
 ### Resume content
