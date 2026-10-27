@@ -1,7 +1,7 @@
 {
   "profile": {
     "name": "Teodor Toni",
-    "title": "Senior Full-Stack Software Engineer",
+    "title": "Senior Software Engineer",
     "location": "Venice, FL",
     "highlights": [
       {
@@ -33,7 +33,7 @@
     },
     "jobPreference": "Remote US",
     "headline": "Building reliable backend systems, APIs, and production web applications.",
-    "stack": "TypeScript · React · Node.js · AWS · AI|ML",
+    "stack": "Backend | APIs | AWS | Distributed Systems ",
     "supporting": "Senior Full-Stack Software Engineer with 15 years of experience building and scaling production software, with a strong focus on backend engineering, APIs, AWS, and end-to-end product delivery.",
     "yearsOfExperience": 15,
     "education": {
@@ -287,33 +287,20 @@
       "liveUrl": ""
     },
     {
-      "id": "future-projects",
-      "title": "Upcoming Personal Projects",
-      "date": "Planned",
-      "badge": "GitHub",
-      "summary": "A placeholder project slot for future tools, experiments, or GitHub repositories I plan to publish as I continue building.",
+      "id": "stream-access-gateway",
+      "title": "Stream Access Gateway",
+      "date": "Current",
+      "badge": "Content Delivery API",
+      "summary": "A NestJS API for content distribution integrations, managing partner credentials, issuing scoped access tokens, retrieving content metadata, and generating tokenized playback URLs for multiple stream formats.",
       "tools": [
-        "React",
-        "Node.js",
         "TypeScript",
-        "AI"
+        "NestJS",
+        "TypeORM",
+        "MySQL",
+        "AWS Lambda",
+        "Serverless"
       ],
-      "githubUrl": "https://github.com/teodortoni",
-      "liveUrl": ""
-    },
-    {
-      "id": "placeholder-project-1",
-      "title": "Project Placeholder 1",
-      "date": "Planned",
-      "badge": "Coming Soon",
-      "summary": "A future GitHub project placeholder for a new app, internal tool, or prototype I plan to build and publish later.",
-      "tools": [
-        "React",
-        "TypeScript",
-        "Node.js",
-        "API"
-      ],
-      "githubUrl": "https://github.com/teodortoni",
+      "githubUrl": "https://github.com/teodortoni/stream-access-gateway",
       "liveUrl": ""
     }
   ],
@@ -360,9 +347,14 @@
     {
       "title": "Frontend",
       "items": [
-        "React",
+        "Javascript",
         "TypeScript",
-        "Component architecture"
+        "React",
+        "Vue",
+        "Component architecture",
+        "Html",
+        "Css",
+        "Responsive"
       ]
     },
     {
