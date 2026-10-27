@@ -268,6 +268,25 @@
       "liveUrl": "https://teodortoni.github.io/resume/"
     },
     {
+      "id": "message-relay",
+      "title": "Message Relay",
+      "date": "Current",
+      "badge": "AWS / Serverless",
+      "summary": "A serverless message routing and delivery platform for partner integrations, built with AWS Lambda, SQS, API Gateway, and a relational database to validate, queue, retry, and forward structured messages to downstream systems.",
+      "tools": [
+        "TypeScript",
+        "Node.js",
+        "AWS Lambda",
+        "SQS",
+        "API Gateway",
+        "MySQL",
+        "Serverless",
+        "Docker"
+      ],
+      "githubUrl": "https://github.com/teodortoni/message-relay",
+      "liveUrl": ""
+    },
+    {
       "id": "future-projects",
       "title": "Upcoming Personal Projects",
       "date": "Planned",
